@@ -1,0 +1,12 @@
+{
+  "name": "1980TK",
+  "displayName": "1980TK",
+  "expo": {
+    "name": "1980TK",
+    "slug": "1980TK",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
