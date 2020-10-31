@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 const INITIAL_STATE = {
+  day: 98,
  city: {
   name: "Outlands",
   hasStore: true,
@@ -17,5 +18,5 @@ const gameReducer = (state = INITIAL_STATE, action) => {
 };
 
 export default combineReducers({
-  friends: friendsReducer
+  game: gameReducer
 });
