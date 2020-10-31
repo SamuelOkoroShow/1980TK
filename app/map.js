@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, TouchableOpacity, Text} from 'react-native'
 import { connect } from 'react-redux';
+import Location from './location'
+ 
 
 const map = (props) => {
   return (
     <View stlye = {{flex:1}}>
-
-    <Text>Hello World</Text>
+    <Location />
     <Text>{props.game.day}</Text>
     </View>
   )
