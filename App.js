@@ -13,7 +13,7 @@ export default function App() {
     <Provider store={store}>
     <View style={styles.container}>
       <Map />
-      <StatusBar style="auto" />
+      <StatusBar hidden style="auto" />
     </View>
     </Provider>
   );

@@ -34,16 +34,16 @@ const useCoordinate = (coordinate) => {
 
 const map = (props) => {
   return (
-    <View style = {{flex:1, justifyContent:'flex-end', paddingTop:20}}>
+    <View style = {{flex:1, justifyContent:'flex-end', borderRadius:10, padding:20}}>
     <FlatList
     style = {{alignSelf:'center', backgroundColor:'#333'}}
-    contentContainerStyle= {{alignItems:'center', justifyContent: 'center',flex: 1, backgroundColor:'#ddd'}}
+    contentContainerStyle= {{alignItems:'center', borderRadius:10, justifyContent: 'center',flex: 1, backgroundColor:'#ddd'}}
       bounce = {false}
-      style = {{marginBottom:30 }}
+      style = {{marginBottom:10 }}
       data = {locationMap}
       keyExtractor={item => item.x}
       renderItem = {(items) => <Location locations = {items}/>} />
-    <Text>{props.game.day}</Text>
+    <Text style={{alignSelf:'center'}}>{props.game.day} days have past</Text>
     </View>
   )
 }
