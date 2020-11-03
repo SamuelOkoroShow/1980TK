@@ -47,7 +47,7 @@ const map = (props) => {
       keyExtractor={item => item.x}
       renderItem = {(items) => <Location locations = {items}/>} />
     <View style={{backgroundColor:'#c0a47c', padding:10}}>
-    <Text style={{alignSelf:'center'}}>{props.game.day} days have past</Text>
+    <Text style={{alignSelf:'center', color:"#252015"}}>{props.game.day} days have past</Text>
     </View>
     </ImageBackground>
   )
