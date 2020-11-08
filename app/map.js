@@ -4,8 +4,14 @@ import { connect } from 'react-redux';
 import Location from './location'
 import map1 from './images/map1.jpg'
 import store from './images/store.png'
+import thug from './images/thug1.png'
+import park1 from './images/park1.png'
+import park2 from './images/park2.png'
+import park3 from './images/park3.png'
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import Menu from './menu'
 
 const OSET = windowWidth/5;
  
@@ -15,17 +21,21 @@ const locationMap = [{
 	img: store,
 },{
 	x: -30 - OSET,
-	y: 0
+	y: 0,
+	img: thug
 },{
 	x: -50 + OSET,
-	y: 0 - OSET
+	y: 0 - OSET,
+	img: park1
 },
 {
 	x: -30,
 	y: -2.5*(OSET),
+	img: park2
 },{
 	x: -130,
 	y: 2*(OSET),
+	img: park3
 }
 ]
 
@@ -47,8 +57,9 @@ const map = (props) => {
       keyExtractor={item => item.x}
       renderItem = {(items) => <Location locations = {items}/>} />
     <View style={{backgroundColor:'#c0a47c', padding:10}}>
-    <Text style={{alignSelf:'center', color:"#252015"}}>{props.game.day} days have past</Text>
+    <Text style={{alignSelf:'center', color:"#252015"}}>{props.game.city.name}</Text>
     </View>
+    <Menu game = {props.game} />
     </ImageBackground>
   )
 }

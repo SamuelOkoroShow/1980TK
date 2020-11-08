@@ -13,8 +13,8 @@ const Location = (props) => {
     shadowOpacity: 0.8,
     overflow: 'hidden',
     shadowRadius: 1, elevation:5, left:props.locations.item.x, bottom:props.locations.item.y, backgroundColor:'#ccc', width:LOCATION_SIZE, height:LOCATION_SIZE, borderRadius:LOCATION_SIZE/2}}>
-			<Image source={store} resizeMode = "stretch" style={{flex:1, height:LOCATION_SIZE, width:LOCATION_SIZE}} />
+			<Image source={props.locations.item.img} resizeMode = "stretch" style={{flex:1, height:LOCATION_SIZE, width:LOCATION_SIZE}} />
 			</TouchableOpacity>)
-	}
+	} 
 
 export default Location;
