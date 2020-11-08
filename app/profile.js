@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {View,ScrollView, TouchableOpacity, Dimensions, Image, Text, Animated} from 'react-native'
 import { connect } from 'react-redux';
@@ -7,6 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 const SECTION_HEIGHT = windowHeight/5;
 const windowWidth = Dimensions.get('window').width;
 
+const PARTY_BAR = windowWidth-20
 const AVATAR_IMG = 70;
 const HP_BAR = 210;
 const PARTY_MEMBER = 50
@@ -41,6 +43,23 @@ const HP = () => {
       <View style={{height:4, width:health, backgroundColor:healthColor, borderRadius:5}} />
       </View>)
   }
+
+ const PartyHP = ({party}) => {
+ 	const { hp, maxHp } = party
+		var health = (hp/maxHp) * PARTY_BAR 
+		var healthColor
+      //custom health colors
+      if (health < (PARTY_BAR/4)){
+        healthColor = "#f96062"
+      }else if(health > (PARTY_BAR/5.1) && health < (PARTY_BAR/2.1)){
+        healthColor = "#fbd34e"
+      } else{
+        healthColor = "#b7eb9b"
+      }
+      return(<View style={{height:6, backgroundColor:'#f7f7f7', width:PARTY_BAR, borderColor:'#c7c7c7', borderWidth:1, borderRadius:5}}>
+      <View style={{height:4, width:health, backgroundColor:healthColor, borderRadius:5}} />
+      </View>)
+ }
 
   const Names = () => {
   	return props.game.party.map((party,index) => {
@@ -91,6 +110,7 @@ const HP = () => {
 				outputRange:[PARTY_MEMBER, PARTY_MEMBER*2]
 			}), backgroundColor:'#000', margin:5, marginHorizontal:10, borderRadius:3, paddingRight:10 }}>
   	<PartyPress party={party} />
+  	<PartyHP party = {party} />
   	</Animated.View>)
   	});
   }
@@ -99,7 +119,7 @@ const HP = () => {
   	
   	animation(fold === 1 ? 0 : 1).start()
 
-	setTimeout(() => {setfold(fold === 1? 0: 1)}, 200);
+	setTimeout(() => {setfold(fold === 1? 0: 1)}, 100);
 
   }
 

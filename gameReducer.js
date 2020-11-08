@@ -31,7 +31,7 @@ const INITIAL_STATE = {
   job: 'Actor',
   img: thug1,
   maxHp: 120,
-  hp: 40,
+  hp: 70,
   shooting: 40,
   running: 45,
   hotwiring: 80,
@@ -39,11 +39,11 @@ const INITIAL_STATE = {
   speaking: 100,
 
  },{
-  name: "Devon Guztavo",
+  name: "Mercedez Lopez",
   img: thug1,
   maxHp: 120,
   job: 'Driver',
-  hp: 40,
+  hp: 10,
   shooting: 40,
   running: 45,
   hotwiring: 80,
