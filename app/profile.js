@@ -108,7 +108,12 @@ const HP = () => {
   	return(<Animated.View style={{height:animatedVal.interpolate({
 				inputRange:[0,1],
 				outputRange:[PARTY_MEMBER, PARTY_MEMBER*2]
-			}), backgroundColor:'#000', margin:5, marginHorizontal:10, borderRadius:3, paddingRight:10 }}>
+			}), backgroundColor:'#000',shadowColor: '#333',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    overflow: 'hidden',
+    elevation: 3,
+    shadowRadius: 1, margin:5, marginHorizontal:10, borderRadius:3, paddingRight:10 }}>
   	<PartyPress party={party} />
   	<PartyHP party = {party} />
   	</Animated.View>)
@@ -124,7 +129,12 @@ const HP = () => {
   }
 
   const Stats = ({name, stat}) => {
-  	return(<View style={{justifyContent:'space-around',flexDirection:'row', backgroundColor:'#333', padding:5, borderRadius:3, margin:5, alignItems:'center'}}>
+  	return(<View style={{justifyContent:'space-around',flexDirection:'row',shadowColor: '#000',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.8,
+    overflow: 'hidden',
+    elevation: 5,
+    shadowRadius: 1, backgroundColor:'#333', padding:5, borderRadius:3, margin:5, alignItems:'center'}}>
   	<Text style={{color:'#fff', fontSize:11}}>{name}</Text>
   	<Text style={{color:'#fff', fontSize:11}}>  {stat}</Text>
   	</View>)
