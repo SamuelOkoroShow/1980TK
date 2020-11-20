@@ -9,6 +9,8 @@ import gameReducer from "./gameReducer"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Profile from './app/profile'
+import Battle from './app/battle'
+import Inventory from './app/inventory'
 
 const Stack = createStackNavigator();
 const store = createStore(gameReducer);
@@ -19,7 +21,7 @@ export default function App() {
     <StatusBar hidden style="auto" />
      <NavigationContainer>
       <Stack.Navigator
-      initialRouteName = "Profile"
+      initialRouteName = "Battle"
       screenOptions={{
       headerShown: false
         }}
@@ -29,9 +31,19 @@ export default function App() {
           component={Map}
           options={{ title: 'Welcome' }}
         />
+        <Stack.Screen
+          name="Battle"
+          component={Battle}
+          options={{ title: 'Welcome' }}
+        />
          <Stack.Screen
           name="Profile"
           component={Profile}
+        />
+        <Stack.Screen
+          name="Inventory"
+          component={Inventory}
+          options={{ title: 'Welcome' }}
         />
         </Stack.Navigator>
         </NavigationContainer>

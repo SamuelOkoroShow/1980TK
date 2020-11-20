@@ -54,7 +54,7 @@ const map = (props) => {
       bounce = {false}
       style = {{marginBottom:10 }}
       data = {locationMap}
-      keyExtractor={item => item.x}
+      keyExtractor={item => {item.x + item.y}}
       renderItem = {(items) => <Location locations = {items}/>} />
     <View style={{backgroundColor:'#c0a47c', padding:10}}>
     <Text style={{alignSelf:'center', color:"#252015"}}>{props.game.city.name}</Text>
