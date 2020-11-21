@@ -11,7 +11,7 @@ const hk7 = {
   price : 500,
   img: pistol1,
   damage: 20,
-  accuracy: 60,
+  accuracy: 40,
   use:HAND,
   shootingLvl: 20
 } 
@@ -50,7 +50,9 @@ const INITIAL_STATE = {
  player : {
   name: "Ramiro Sanchez",
   img: thug2,
-  
+  hand: {
+    gun:hk7
+  },
   maxHp: 120,
   hp: 50,
   shooting: 40,
