@@ -4,6 +4,11 @@
   "expo": {
     "name": "1980TK",
     "slug": "1980TK",
+    "splash": {
+      "image": "./app/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#000"
+    },
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
