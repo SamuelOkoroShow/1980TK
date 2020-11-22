@@ -81,6 +81,11 @@ function Battle(props) {
             </View>)
      }
 
+    const getRandomArbitrary = (min, max) => {
+        // excludes the max
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
     const hit_check = (accuracy,level) => {
         var chances = Math.floor(Math.random() * 100) + 1;
         var attempt = accuracy + (level/20)
@@ -92,12 +97,18 @@ function Battle(props) {
             }
         }
         
+    const targeting = () => {
+        var target = getRandomArbitrary(0,enemies.length)
+        return target
+    }
+
     const onAttack = () => {
         var fired = "You don't have a weapon."
         var hit = "You didn't hit anything."
         var dead = "Enemy died"
+        var target = targeting()
 
-
+        console.log(target)
         if(props.game.player.hand.gun){
             fired = {
                 dialog:'You fired your ' + props.game.player.hand.gun.name + "." + enemies.length,
@@ -106,18 +117,18 @@ function Battle(props) {
             setBattle_dialog(battle_dialog => [...battle_dialog, fired])
             var check_for_hit = hit_check(props.game.player.hand.gun.accuracy, props.game.player.shooting);
 
-                if(enemies[2].hp > 20){
+                if(enemies[target].hp > 20){
                     if(check_for_hit.hit){
                         hit = {
-                            dialog: check_for_hit.dialog + enemies[2].name,
+                            dialog: check_for_hit.dialog + enemies[target].name,
                             color:GREEN
                         } 
                         //Next line sets the Battle Dialog Box
                         setBattle_dialog(battle_dialog => [...battle_dialog, hit])
-                        enemies[2].hp = enemies[2].hp - props.game.player.hand.gun.damage;
+                        enemies[target].hp = enemies[target].hp - props.game.player.hand.gun.damage;
                 }else{
                     hit = {
-                        dialog:check_for_hit.dialog + enemies[2].name,
+                        dialog:check_for_hit.dialog + enemies[target].name,
                         color:RED
                     }
                     //Next line sets the Battle Dialog Box
@@ -127,22 +138,22 @@ function Battle(props) {
 
                 if(check_for_hit.hit){
                     hit = {
-                        dialog: check_for_hit.dialog + enemies[2].name,
+                        dialog: check_for_hit.dialog + enemies[target].name,
                         color:GREEN
                     } 
                     //Next line sets the Battle Dialog Box
                     setBattle_dialog(battle_dialog => [...battle_dialog, hit])
-                    enemies[2].hp = 0;
+                    enemies[target].hp = 0;
                     dead = {
-                        dialog:enemies[2].name + " is dead",
+                        dialog:enemies[target].name + " is dead",
                         color: GREEN
                     }
                     
-                    enemies[2].dead = true
+                    enemies[target].dead = true
                     setBattle_dialog(battle_dialog => [...battle_dialog, dead])
                 }else{
                     hit = {
-                        dialog:check_for_hit.dialog + enemies[2].name,
+                        dialog:check_for_hit.dialog + enemies[target].name,
                         color:RED
                 }
                 //Next line sets the Battle Dialog Box

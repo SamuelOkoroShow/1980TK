@@ -53,6 +53,7 @@ const INITIAL_STATE = {
   hand: {
     gun:hk7
   },
+  speed:20,
   maxHp: 120,
   hp: 50,
   shooting: 40,
@@ -66,6 +67,7 @@ const INITIAL_STATE = {
  party: [{
   name: "Devon Guztavo",
   job: 'Actor',
+  speed:20,
   img: thug1,
   maxHp: 120,
   hp: 70,
@@ -80,6 +82,7 @@ const INITIAL_STATE = {
   img: thug1,
   maxHp: 120,
   job: 'Driver',
+  speed:20,
   hp: 10,
   shooting: 40,
   running: 45,
