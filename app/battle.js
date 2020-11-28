@@ -174,14 +174,14 @@ function Battle(props) {
                     
             }
         }
+    Ai_turn();        
             
-            
-        }
+    }
 
     const Actions = () => {
             return(<View style={{flex:1, backgroundColor:'#333'}}>
                 <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                <TouchableOpacity onPress={() => moveAway(props.game.player.speed)} style={{flexDirection:'row', padding:10, justifyContent:'space-between', flex:1, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
+                <TouchableOpacity onPress={() => moveAway(props.game.player)} style={{flexDirection:'row', padding:10, justifyContent:'space-between', flex:1, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
                     <AntDesign name={'doubleleft'} size={30} color="#fff" />
                     <Text style={{color:'#fff', textAlign:'center'}}>Move{"\n"}Away</Text>
                 </TouchableOpacity>
@@ -189,7 +189,7 @@ function Battle(props) {
                     <Image source = {gun} resizeMode="contain" style={{width:40, marginRight:10, height:40}} />
                     <Text style={{color:'#fff'}}>Attack</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => moveTowards(props.game.player.speed)} style={{flex:1,flexDirection:'row', justifyContent:'space-between', padding:10, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
+                <TouchableOpacity onPress={() => moveTowards(props.game.player)} style={{flex:1,flexDirection:'row', justifyContent:'space-between', padding:10, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
                     <AntDesign name={'doubleright'} size={30} color="#fff" />
                     <Text style={{color:'#fff', textAlign:'center'}}>Move{"\n"}Towards</Text>
                 </TouchableOpacity>
@@ -201,32 +201,40 @@ function Battle(props) {
                 </View>
             </View>)
         }
-    const moveTowards = (raw_speed) => {
-        var speed = raw_speed - getRandomArbitrary(0,20)
+    const moveTowards = (stats) => {
+        var speed = stats.speed - getRandomArbitrary(0,20)
+        var player1 = "You're at maximum closeness";
+        var player2 = "You move closer"
+        var player3 = stats.name + " is moving towards"
         if ((distance+speed)>100) {
             setDistance(100)
-            var disclose = {dialog: "You're at maximum closeness", color: GREEN}
+            var disclose = {dialog: player1, color: GREEN}
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
         }else{
-            var disclose = {dialog: "You move closer", color: BASIC}
+            var disclose = {dialog: player2, color: BASIC}
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
         setDistance(distance+speed)
         }
+        Ai_turn();
     }
 
-    const moveAway = (raw_speed) => {
-        var speed = raw_speed - getRandomArbitrary(0,20)
+    const moveAway = (stats) => {
+        var speed = stats.speed - getRandomArbitrary(0,20)
+        var player1 = "You got away.";
+        var player2 = "You try to flee."
+        var player3 = stats.name + ' is moving away.'
         if ((distance-speed)<0) {
             setDistance(0)
-            var disclose = {dialog: "You got away.", color: GREEN}
+            var disclose = {dialog: player1, color: GREEN}
             setGotaway(true)
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
 
         }else{
-            var disclose = {dialog: "You try to flee.", color: BASIC}
+            var disclose = {dialog: player2, color: BASIC}
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
             setDistance(distance-speed)
         }
+        Ai_turn();
     }
     const DistanceTab = () => {
         var length = (distance/100) * windowWidth;
@@ -234,10 +242,21 @@ function Battle(props) {
             <View style={{height:4, width:length, backgroundColor:'#eee'}} />
         </View>)
     }
+
+    const ai_shoots = (ai) => {
+        var disclose = {dialog: ai.name + " shoots " + ai.item.gun.name + ".", color: BASIC}
+        setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+    }
+
     const Ai_turn = () =>{
-        if(!Ai_turn.dead){
-            if(distance > 50){
-                moveTowards();
+        for(var i = 0; i < enemies.lenght; i++){
+            if(distance > 50 && enemies[i].health > 50){
+                moveToward(enemies[i])
+        }else if(enemies[i].health > 40){
+            ai_shoots()
+
+        }else{
+                moveAway(enemies[i])
             }
         }
     }

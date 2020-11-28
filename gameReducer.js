@@ -4,6 +4,9 @@ import thug1 from './app/images/thug1.png'
 import pistol1 from './app/images/pistol1.png'
 import assult1 from './app/images/assult1.png'
 import smg1 from './app/images/smg1.png'
+import {SHOOT_PLAYER} from './types'
+import {SHOOT_PARTY} from './types'
+import update from 'react-addons-update';
 
 const HAND = 'hand'
 const hk7 = {
@@ -95,6 +98,15 @@ const INITIAL_STATE = {
 
 const gameReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SHOOT_PLAYER:
+  
+      return update(state, { 
+        player: { 
+          health: action.payload
+        }
+      });
+     // return newState;
+
     default:
       return state
   }
