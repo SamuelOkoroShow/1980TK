@@ -4,6 +4,8 @@ import police from './characters/police'
 import { connect } from 'react-redux';
 import gun from './images/pistol1.png'
 import { AntDesign } from '@expo/vector-icons';
+import { shootPlayer, shootParty } from '../actions';
+import { bindActionCreators } from 'redux';
 
 const windowWidth = Dimensions.get('window').width;
 const ENEMIES_BLOCK = 300;
@@ -21,10 +23,11 @@ function Battle(props) {
     const [battle_dialog, setBattle_dialog] = useState([{dialog:"You encountered a police party", color:BASIC}])
     const [distance, setDistance] = useState(distanceLoad)
     const [gotAway, setGotaway] = useState(false)
+    const [viewActions, setViewActions] = useState(true)
     const scrollView = useRef(null)
 
     const Enemies_block = (props) => {
-        return(<View style={{alignSelf:"flex-end", borderLeftWidth:1, borderColor:'#555', alignItems:'center', width:ENEMIES_BLOCK, height: ENEMIES_BLOCK-100, backgroundColor:'#333'}}>
+        return(<View style={{alignSelf:"flex-end", borderLeftWidth:1, borderColor:'#555', alignItems:'center', width:ENEMIES_BLOCK, paddingVertical:5, backgroundColor:'#333', alignSelf:'center'}}>
             {props.children}
         </View>)
     }
@@ -76,7 +79,7 @@ function Battle(props) {
     //     })
 
     const Dialog = (props) =>{
-        return(<View style={{flex:3, padding:20, backgroundColor:'#222'}}>
+        return(<View style={{flex:3, height:400, padding:20, backgroundColor:'#222'}}>
                 <ScrollView
                 ref = {scrollView}
                 onContentSizeChange={() => scrollView.current.scrollToEnd({animated: true})}
@@ -108,12 +111,15 @@ function Battle(props) {
     }
 
     const onAttack = () => {
+       // console.log(props)
         var fired = "You don't have a weapon."
         var hit = "You didn't hit anything."
         var dead = "Enemy died"
         var target = targeting()
-
-        console.log(target)
+        if(gotAway){
+            this.navigation.navigate('Map')
+        }
+        //console.log(target)
         if(props.game.player.hand.gun){
             fired = {
                 dialog:'You fired your ' + props.game.player.hand.gun.name + "." + enemies.length,
@@ -195,8 +201,8 @@ function Battle(props) {
                 </TouchableOpacity>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                    <TouchableOpacity style={{flexDirection:'row', backgroundColor:'tomato', padding:10, justifyContent:'center', flex:1, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
-                        <AntDesign name={'team'} size={40} color="#fff" />
+                    <TouchableOpacity onPress = {() => setViewActions(false)} style={{flexDirection:'row', borderRadius:5, backgroundColor:'tomato', padding:10, justifyContent:'center', flex:1, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
+                        <AntDesign name={'team'} size={30} color="#fff" />
                     </TouchableOpacity>
                 </View>
             </View>)
@@ -205,8 +211,17 @@ function Battle(props) {
         var speed = stats.speed - getRandomArbitrary(0,20)
         var player1 = "You're at maximum closeness";
         var player2 = "You move closer"
-        var player3 = stats.name + " is moving towards"
-        if ((distance+speed)>100) {
+        var player3 = stats.name + " is moving towards you"
+        
+        props.shootPlayer({damage: 50})
+
+        if(stats.ai){
+            player2 = player3
+        }
+        if(gotAway){
+            props.navigation.navigate("Map")
+        }
+        if ((distance+speed)>=100) {
             setDistance(100)
             var disclose = {dialog: player1, color: GREEN}
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
@@ -215,7 +230,9 @@ function Battle(props) {
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
         setDistance(distance+speed)
         }
-        Ai_turn();
+        if(stats.ai == null){
+            //Ai_turn()
+        }
     }
 
     const moveAway = (stats) => {
@@ -223,42 +240,159 @@ function Battle(props) {
         var player1 = "You got away.";
         var player2 = "You try to flee."
         var player3 = stats.name + ' is moving away.'
+
+        if(stats.ai != null){
+            player2 = player3
+        }else{
+
+        }
+        if(gotAway){
+            props.navigation.navigate("Map")
+        }
         if ((distance-speed)<0) {
             setDistance(0)
             var disclose = {dialog: player1, color: GREEN}
             setGotaway(true)
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
-
+            
         }else{
             var disclose = {dialog: player2, color: BASIC}
             setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
             setDistance(distance-speed)
+            
+            Ai_turn();
         }
-        Ai_turn();
+        
     }
     const DistanceTab = () => {
-        var length = (distance/100) * windowWidth;
+        var length = (distance/100) * (windowWidth-5);
+        if(distance>100){
+            setDistance(100)
+            length = windowWidth-5;
+        }
+
+        console.log("distance is " + distance)
+        
         return(<View style={{width:windowWidth-2, height:6, borderWidth:1, borderColor:'#eee', justifyContent:'center'}}>
             <View style={{height:4, width:length, backgroundColor:'#eee'}} />
         </View>)
     }
 
     const ai_shoots = (ai) => {
+        var shot = false
+
         var disclose = {dialog: ai.name + " shoots " + ai.item.gun.name + ".", color: BASIC}
         setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+        shot = true
+        
+        var newNum = getRandomArbitrary(0,100)
+        newNum = newNum + (ai.shooting/4) - 5
+        
+        // hits armor/car
+        if(props.game.car){
+            if (newNum > 60 && newNum){
+                disclose = {dialog: "The bullet hits the car.", color: GREEN}
+                setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+            }else{
+                disclose = {dialog: ai.name + " missed.", color: GREEN}
+                setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+        }
+        }else{
+            if (newNum > 60 ){
+                console.log('Hits target')
+                var target = getRandomArbitrary(0,props.game.party.length+1)
+                if(target == 0){
+                    //hits player
+                    var dodge = getRandomArbitrary(0,10)
+                    var distanceBonus = distance/8
+
+                    var damage = ai.item.gun.damage - dodge - distanceBonus
+                    if(damage < 0){
+                        damage = 0
+                        console.log("deals zero damage")
+                    }
+                    console.log('you were hit')
+                    var newHP = props.game.player.hp - damage
+                    newHP = Math.floor(newHP)
+                    //props.shootPlayer({damage:newHP})
+                    disclose = {dialog: "You were hit. Your health is now " + props.game.player.hp, color: RED}
+                    setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+                }else{
+                    //hits party member
+                    var dodge = getRandomArbitrary(0,10)
+                    var distanceBonus = Math.floor(distance/20)
+
+                    var damage = ai.item.gun.damage - dodge - distanceBonus
+                    var hit1 = props.game.party[target-1].name +' was hit. HP now';
+                    var hit2 = props.game.party[target-1].name +' has died';
+                    console.log(hit1)
+
+                    var newHP = props.game.party[target-1].hp - damage
+                    newHP = Math.floor(newHP)
+
+                    if(newHP <= 0){
+                        console.log(hit2)
+                        disclose = {dialog: hit2 + props.game.party[target-1].hp, color: RED}
+                        setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+                        
+                    }else{
+                        disclose = {dialog: hit1 + props.game.party[target-1].hp, color: RED}
+                        setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+                    }
+                    
+                    // shoot method
+                    //props.shootParty({id:target-1, damage:newHP})
+                    
+                }
+            }else{
+                // misses
+                disclose = {dialog: ai.name + " missed.", color: GREEN}
+                setBattle_dialog(battle_dialog => [...battle_dialog, disclose])
+            }
+        }
+        
+        // hits
+
     }
 
     const Ai_turn = () =>{
-        for(var i = 0; i < enemies.lenght; i++){
-            if(distance > 50 && enemies[i].health > 50){
-                moveToward(enemies[i])
-        }else if(enemies[i].health > 40){
-            ai_shoots()
+        console.log("Ai's turn")
+        for(var i = 0; i < enemies.length; i++){
+            if(distance < 50 && enemies[i].hp > 50){
+                console.log('ai moves')
+                moveTowards(enemies[i])
+        }else if(enemies[i].hp > 40){
+            console.log('ai shoots')
+            ai_shoots(enemies[i])
 
         }else{
+                console.log('ai moves away' )
                 moveAway(enemies[i])
             }
         }
+    }
+
+    const PartyEach = ({character}) => {
+        return(<View style={{width:250, borderRightWidth:1, borderColor:'white', marginVertical:20, marginRight:15, flexDirection:'row', alignItems:'center'}}>
+            <Image source={character.img} resizeMode="contain" style={{width:80, height:80}} />
+            <View style={{marginLeft:30}}>
+            <Text style={{color:'#fee', fontSize:17}}>{character.name}</Text>
+        
+            <HP hp={character.hp} maxHp={character.maxHp} />
+            <Text style={{color:'#fee', fontSize:14, marginTop:10}}>Shooting Lvl: {character.shooting}</Text>
+            
+            </View>
+            
+        </View>)
+    }
+    const PartyBlock = () => {
+    return(<ScrollView horizontal>
+        <PartyEach character={props.game.player} />
+        {props.game.party.map((item,index) => <PartyEach key={index} character={item} />)}
+        <TouchableOpacity onPress = {() => setViewActions(true)} style={{width:200, borderWidth:1, borderColor:'#ddd', alignItems:'center', justifyContent:'center', borderRadius:5, margin:30}}>
+        <Text style={{color:'white',fontSize:15}}>Return</Text>
+        </TouchableOpacity>
+        </ScrollView>)
     }
     return (
         <View style={{flex:1, backgroundColor:'#333'}}>
@@ -273,7 +407,7 @@ function Battle(props) {
         {battle_dialog.map((dialog, index) => {return(<Text key = {index.toString()} style={{color:dialog.color, fontSize:13, padding:5}}>{dialog.dialog}</Text>)})}
             </Dialog>
             <DistanceTab />
-            <Actions />
+            {(viewActions)?<Actions />:<View style={{height:150}}><Text style={{backgroundColor:'#000', color:'white',fontSize:18, alignSelf:'center', marginTop:10}}>Your Party</Text><PartyBlock /></View>}
         </View>
     )
 }
@@ -281,4 +415,10 @@ const mapStateToProps = (state) => {
     const { game } = state
     return { game }
   };
-  export default connect(mapStateToProps)(Battle);
+  const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+      shootPlayer, shootParty
+    }, dispatch)
+  );
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Battle);

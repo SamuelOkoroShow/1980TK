@@ -58,7 +58,7 @@ const INITIAL_STATE = {
   },
   speed:20,
   maxHp: 120,
-  hp: 50,
+  hp: 100,
   shooting: 40,
   running: 45,
   hotwiring: 80,
@@ -71,9 +71,10 @@ const INITIAL_STATE = {
   name: "Devon Guztavo",
   job: 'Actor',
   speed:20,
+  ai: true,
   img: thug1,
   maxHp: 120,
-  hp: 70,
+  hp: 100,
   shooting: 40,
   running: 45,
   hotwiring: 80,
@@ -86,7 +87,8 @@ const INITIAL_STATE = {
   maxHp: 120,
   job: 'Driver',
   speed:20,
-  hp: 10,
+  ai: true,
+  hp: 100,
   shooting: 40,
   running: 45,
   hotwiring: 80,
@@ -99,12 +101,27 @@ const INITIAL_STATE = {
 const gameReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SHOOT_PLAYER:
-  
-      return update(state, { 
-        player: { 
-          health: action.payload
+      //console.log(action.payload)
+      var newState = {...state,  
+      player: {...state.player, 
+          hp: action.payload.damage
         }
-      });
+      }
+      console.log(newState)
+      return newState
+      
+    case SHOOT_PARTY:
+      //console.log(action)
+      console.log("shoot party reducer")
+      console.log(action.payload.damage)
+      return state
+      // return update(state, { 
+      //   party: { 
+      //     [action.payload.id]: {
+      //       hp: {$set: action.payload.damage}
+      //     }
+      //   }
+      // });
      // return newState;
 
     default:

@@ -11,7 +11,9 @@ const police = [{
     maxHp:100,
     image: police_man,
     avatar: police_avatar1,
+    shooting:20,
     speed: 30,
+    ai: true,
     item : {
         gun: guns[0]
     }},
@@ -20,6 +22,8 @@ const police = [{
     maxHp:100,
     image: police_man2,
     avatar: police_avatar2,
+    shooting:40,
+    ai : true,
     speed:30,
     item : {
         gun: guns[0]

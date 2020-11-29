@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View,FlatList, ImageBackground, Dimensions, TouchableOpacity, Text} from 'react-native'
 import { connect } from 'react-redux';
 import Location from './location'
@@ -46,6 +46,7 @@ const useCoordinate = (coordinate) => {
 }
 
 const map = (props) => {
+  const [map_name, setMapName] = useState(props.game.city.name)
   return (
     <ImageBackground source={map1} style = {{flex:1, width:null, height:null, justifyContent:'flex-end', borderRadius:10, padding:20}}>
     <FlatList
@@ -54,7 +55,7 @@ const map = (props) => {
       bounce = {false}
       style = {{marginBottom:10 }}
       data = {locationMap}
-      keyExtractor={item => {item.x + item.y}}
+      keyExtractor={(item,index) => item.key}
       renderItem = {(items) => <Location locations = {items}/>} />
     <View style={{backgroundColor:'#c0a47c', padding:10}}>
     <Text style={{alignSelf:'center', color:"#252015"}}>{props.game.city.name}</Text>
