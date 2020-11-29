@@ -107,22 +107,23 @@ const gameReducer = (state = INITIAL_STATE, action) => {
           hp: action.payload.damage
         }
       }
-      console.log(newState)
+      //console.log(newState)
       return newState
       
     case SHOOT_PARTY:
       //console.log(action)
-      console.log("shoot party reducer")
-      console.log(action.payload.damage)
-      return state
-      // return update(state, { 
-      //   party: { 
-      //     [action.payload.id]: {
-      //       hp: {$set: action.payload.damage}
-      //     }
-      //   }
-      // });
-     // return newState;
+      //console.log("shoot party reducer")
+      //console.log(action.payload.damage)
+
+      var newArr = [...state.party]
+      newArr[action.payload.id] = {
+        ...newArr[action.payload.id],
+        hp: action.payload.damage
+      }
+
+      var newState = {...state, party:newArr}
+      console.log(newState)
+      return newState
 
     default:
       return state

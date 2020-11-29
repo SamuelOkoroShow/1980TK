@@ -213,7 +213,8 @@ function Battle(props) {
         var player2 = "You move closer"
         var player3 = stats.name + " is moving towards you"
         
-        props.shootPlayer({damage: 50})
+        //props.shootPlayer({damage: 50})
+        props.shootParty({id:0, damage:30})
 
         if(stats.ai){
             player2 = player3
