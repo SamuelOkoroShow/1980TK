@@ -21,7 +21,7 @@ export default function App() {
     <StatusBar hidden style="auto" />
      <NavigationContainer>
       <Stack.Navigator
-      initialRouteName = "Battle"
+      initialRouteName = "Map"
       screenOptions={{
       headerShown: false
         }}

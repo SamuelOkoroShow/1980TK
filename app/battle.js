@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList, ScrollView, Dimensions, TouchableOpacity }
 import police from './characters/police'
 import { connect } from 'react-redux';
 import gun from './images/pistol1.png'
-import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { shootPlayer, shootParty } from '../actions';
 import { bindActionCreators } from 'redux';
 import { Audio } from 'expo-av';
@@ -202,7 +202,7 @@ function Battle(props) {
             return(<View style={{flex:1, backgroundColor:'#333'}}>
                 <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
                 <TouchableOpacity onPress={queueMoveAway} style={{flexDirection:'row', padding:10, justifyContent:'space-between', flex:1, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
-                    <AntDesign name={'doubleleft'} size={30} color="#fff" />
+                    <Ionicons name={'ios-skip-backward'} size={30} color="#fff" />
                     <Text style={{color:'#fff', textAlign:'center'}}>Move{"\n"}Away</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress = {group_attack} style={{flex:1,flexDirection:'row', justifyContent:'space-between', padding:10, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
@@ -210,13 +210,13 @@ function Battle(props) {
                     <Text style={{color:'#fff'}}>Attack</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={queueMoveTowards} style={{flex:1,flexDirection:'row', justifyContent:'space-between', padding:10, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
-                    <AntDesign name={'doubleright'} size={30} color="#fff" />
+                    <Ionicons name={'ios-walk'} size={30} color="#fff" />
                     <Text style={{color:'#fff', textAlign:'center'}}>Move{"\n"}Towards</Text>
                 </TouchableOpacity>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
                     <TouchableOpacity onPress = {() => setViewActions(false)} style={{flexDirection:'row', borderRadius:5, backgroundColor:'tomato', padding:10, justifyContent:'center', flex:1, borderRightWidth:1, borderColor:'#555', alignItems:'center'}}>
-                        <AntDesign name={'team'} size={30} color="#fff" />
+                        <Ionicons name={'ios-pulse'} size={30} color="#fff" />
                     </TouchableOpacity>
                 </View>
             </View>)
