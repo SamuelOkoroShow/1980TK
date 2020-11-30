@@ -51,7 +51,7 @@ const INITIAL_STATE = {
   hasHospital: true
  },
  player : {
-  name: "Ramiro Sanchez",
+  name: "Samuel Okoro",
   img: thug2,
   hand: {
     gun:hk7
@@ -101,14 +101,15 @@ const INITIAL_STATE = {
 const gameReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SHOOT_PLAYER:
-      //console.log(action.payload)
+      console.log("Damage: " + action.payload.damage)
+
       var newState = {...state,  
       player: {...state.player, 
-          hp: action.payload.damage
+          hp: state.player.hp - action.payload.damage
         }
       }
-      //console.log(newState)
-      return newState
+      console.log(newState)
+      return state
       
     case SHOOT_PARTY:
       //console.log(action)
@@ -122,7 +123,7 @@ const gameReducer = (state = INITIAL_STATE, action) => {
       }
 
       var newState = {...state, party:newArr}
-      console.log(newState)
+      //console.log(newState)
       return newState
 
     default:
