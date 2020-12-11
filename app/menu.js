@@ -2,7 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, Dimensions, Text, Animated} from 'react-native'
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 const windowWidth = Dimensions.get('window').width;
-
+const RED = "#f96062"
 const BUTTON_SIZE = windowWidth/6
 
 const menu = (props) => {
@@ -25,15 +25,15 @@ const menu = (props) => {
 			<Text style={{fontSize:9, textAlign:'center'}}></Text>
 	<Text style={{fontSize:9.5, textAlign:'center'}}>Day: {props.game.day}</Text>
 				</View>
-				<TouchableOpacity style={{borderTopRightRadius:BUTTON_SIZE/2, justifyContent:'center', alignItems:'center', marginLeft:5, borderBottomRightRadius:BUTTON_SIZE/2, width:BUTTON_SIZE/1.6}}>
-				 <AntDesign name={'fastforward'} size={15} color="white" />
+				<TouchableOpacity onPress = {props.skipDay} style={{backgroundColor:RED, borderTopRightRadius:BUTTON_SIZE/2, justifyContent:'center', alignItems:'center', marginLeft:5, borderBottomRightRadius:BUTTON_SIZE/2, width:BUTTON_SIZE/1.6}}>
+				 <Ionicons name={'ios-fastforward'} size={15} color="white" />
 				</TouchableOpacity>
 					</View>
 			</View>)
 		}
 	}
 	const onPress = () => {
-		console.log(fold === 1? 0: 1)
+		//console.log(fold === 1? 0: 1)
 		animation(fold === 1 ? 0 : 1).start()
 		setfold(fold === 1? 0: 1);
 		

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useRef} from 'react'
 import { View, Text, Image, FlatList, ScrollView, Dimensions, TouchableOpacity } from 'react-native'
 import police from './characters/police'
 import { connect } from 'react-redux';
@@ -120,7 +120,7 @@ function Battle(props) {
         var dead = "Enemy died"
         var target = targeting()
         if(gotAway){
-            this.navigation.navigate('Map')
+            props.navigation.navigate('Map')
         }
         //console.log(target)
         if(props.game.player.hand.gun.name != null){

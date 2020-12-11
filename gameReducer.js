@@ -4,9 +4,10 @@ import thug1 from './app/images/thug1.png'
 import pistol1 from './app/images/pistol1.png'
 import assult1 from './app/images/assult1.png'
 import smg1 from './app/images/smg1.png'
-import {SHOOT_PLAYER} from './types'
-import {SHOOT_PARTY} from './types'
+import {REDUCE_HEAT, SHOOT_PLAYER, TRAVEL} from './types'
+import {SHOOT_PARTY, SKIP_DAY} from './types'
 import update from 'react-addons-update';
+import locations from './app/locations/index'
 
 const HAND = 'hand'
 const hk7 = {
@@ -44,12 +45,16 @@ const INITIAL_STATE = {
   inventory: [
   hk7
   ],
- city: {
-  name: "Puerto Sayulita",
-  hasStore: true,
-  hasMechanic: true,
-  hasHospital: true
- },
+  heat: 30,
+  city_heat: {
+    puerto_vallerta:30,
+    oaxaca_city: 20,
+    puerto_escondido: 40,
+    ciudad_carmen: 30,
+    tabasco: 30
+
+  },
+ city: locations[0],
  player : {
   name: "Samuel Okoro",
   img: thug2,
@@ -108,8 +113,23 @@ const gameReducer = (state = INITIAL_STATE, action) => {
           hp: state.player.hp - action.payload.damage
         }
       }
-      console.log(newState)
+      //console.log(newState)
       return state
+
+      case SKIP_DAY:
+        console.log("skip day")
+      var newState = {
+        ...state,
+        day : state.day+1
+      }
+      
+      return newState
+
+      case REDUCE_HEAT:
+        var defaultHeat = 25;
+        if(state.heat > defaultHeat){
+          var newState = {...state, heat:state.heat-action.payload.reduceVal}
+        }
       
     case SHOOT_PARTY:
       //console.log(action)
@@ -124,6 +144,11 @@ const gameReducer = (state = INITIAL_STATE, action) => {
 
       var newState = {...state, party:newArr}
       //console.log(newState)
+      return newState
+
+      case TRAVEL:
+
+      var newState = {...state, city:action.payload.city, day:state.day + action.payload.days}
       return newState
 
     default:

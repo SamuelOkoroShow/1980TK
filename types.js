@@ -1,2 +1,11 @@
 export const SHOOT_PLAYER = 'SHOOT_PLAYER';
 export const SHOOT_PARTY = 'SHOOT_PARTY';
+export const SKIP_DAY = 'SKIP_DAY';
+export const REDUCE_HEAT = 'REDUCE_HEAT';
+export const REMOVE_PARTY_MEMBER = 'REMOVE_PARTY_MEMBER'
+export const ADD_CAR = 'ADD_CAR'
+export const ADD_HEAT = 'ADD_HEAT'
+export const ADD_ITEM = 'ADD_ITEM'
+export const ADD_PARTY_MEMBER = 'ADD_PARTY_MEMBER'
+export const ADD_CONTACT = 'ADD_CONTACT'
+export const TRAVEL = 'TRAVEL'

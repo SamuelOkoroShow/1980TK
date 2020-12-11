@@ -1,4 +1,4 @@
-import {SHOOT_PLAYER, SHOOT_PARTY} from './types'
+import {SHOOT_PLAYER, SHOOT_PARTY, SKIP_DAY, REDUCE_HEAT, TRAVEL} from './types'
 
 export const shootPlayer = damageIndex => (
     {
@@ -12,3 +12,19 @@ export const shootPlayer = damageIndex => (
       payload: damageIndex,
     }
   );
+  export const skipDay = day => (
+    {
+      type: SKIP_DAY,
+      payload: day,
+    });
+
+    export const reduceHeat = reduceVal => ({
+      type: REDUCE_HEAT,
+      payload: reduceVal
+    }
+  );
+  export const travel = newLocation => ({
+    type: TRAVEL,
+    payload: newLocation
+  }
+);

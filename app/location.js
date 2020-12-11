@@ -6,9 +6,11 @@ const LOCATION_SIZE = 60;
 var coordinates = {x:0,y:0};
 
 const Location = (props) => {
-	//coordinates = props.useCoordinate(0)[0]
-	//console.log(props)
-		return(<TouchableOpacity onPress ={() => props.setMapName(props.locations.item.name)}  style={{shadowColor: '#000',
+	const newScene = () => {
+		props.setMapName(props.locations.item.name)
+		props.setScene(props.locations.item.navigate)
+	}
+		return(<TouchableOpacity onPress ={newScene}  style={{shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,
     overflow: 'hidden',

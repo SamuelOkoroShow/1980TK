@@ -11,6 +11,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Profile from './app/profile'
 import Battle from './app/battle'
 import Inventory from './app/inventory'
+import Travel from './app/travel'
+import Park from './app/park'
+import Contact from './app/contact'
 
 const Stack = createStackNavigator();
 const store = createStore(gameReducer);
@@ -43,6 +46,21 @@ export default function App() {
         <Stack.Screen
           name="Inventory"
           component={Inventory}
+          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen
+          name="Park"
+          component={Park}
+          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen
+          name="Travel"
+          component={Travel}
+          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen
+          name="Contact"
+          component={Contact}
           options={{ title: 'Welcome' }}
         />
         </Stack.Navigator>
