@@ -1,37 +1,18 @@
-import React, {useEffect, useState, Component} from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, FlatList, ScrollView, Image } from 'react-native'
-import { useFocusEffect } from '@react-navigation/native'
 import { Acura, Audi, Aston_Martin, Ambulance, BMW, Camaro, Deawoo, Ford, Harley_Davidson, Honda, Isuzu, Lamborghini, Scooter, Tesla, Truck, Toyota, Kawasaki, Mercedes, Volkswagen} from './cars/index'
 var cars_array = [Acura, Audi, Aston_Martin, Ambulance, BMW, Camaro, Deawoo, Ford, Harley_Davidson, Honda, Isuzu, Lamborghini, Scooter, Tesla, Truck, Toyota, Kawasaki, Mercedes, Volkswagen]
+import { connect } from 'react-redux';
 
-
-export default class park extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            cars_parked : []
-        }
-    }
-    componentDidmount(){
-        console.log("number_o_cars")
-        var number_o_cars = getRandomArbitrary(1,6);
-        console.log(number_o_cars)
-        for (var i =0; i<number_o_cars; i++){
-            var j = getRandomArbitrary(0,cars_array.length);
-            this.setState({
-                cars_parked: [...this.state.cars_parked, cars_array[j]]
-                })
-            }
-    }
-    componentWillReceiveProps(){
-        console.log("Will Recieve")
-    }
-    getRandomArbitrary(min, max){
-    return Math.floor(Math.random() * (max - min)) + min;
+function Park(props) {
+    const [cars_parked, setCars_parked] = useState([])
+    const getRandomArbitrary = (min, max) => {
+        // excludes the max
+        return Math.floor(Math.random() * (max - min)) + min;
     }
 
-    Parked(data){
-        console.log("parked")
+    const Parked = (data) => {
+        //console.log(data)
 
         return(<View style={{height:80, flexDirection:'row', alignItems:'center', padding:5, marginTop:5, marginHorizontal:10, shadowColor: '#000',
         shadowOffset: { width: 1, height: 1 },
@@ -50,18 +31,21 @@ export default class park extends Component {
         </View>)
     }
 
-    render() {
-        console.log("render")
-        return (
-            <View style={{flex:1, backgroundColor:'#333'}}>
-                {<FlatList
-                data = {this.state.cars_parked}
-                keyExtractor = {(item) => item.name}
-                renderItem = {(data) => this.Parked(data)}
-                />}
-                <ScrollView>
-                {this.state.cars_parked.map((data) => this.Parked(data))}
-                </ScrollView>
-            </View>)
-    }
+    return (
+        <View style={{flex:1}}>
+            {/* {<FlatList
+            data = {cars_array}
+            keyExtractor = {(item) => item.name}
+            renderItem = {(data) => <Parked {...data} />}
+            />} */}
+            <ScrollView>
+            {props.game.park.cars.map((data) => <Parked key={data.name} {...data} />)}
+            </ScrollView>
+        </View>)
 }
+const mapStateToProps = (state) => {
+    const { game } = state
+    return { game }
+  };
+  
+  export default connect(mapStateToProps)(Park);

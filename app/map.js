@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View,FlatList, ImageBackground, Dimensions, TouchableOpacity, Text} from 'react-native'
 import { connect } from 'react-redux';
-import { skipDay, reduceHeat, travel } from '../actions';
+import { skipDay, reduceHeat, randomizeCars, travel } from '../actions';
 import { bindActionCreators } from 'redux';
 import Location from './location'
 import map1 from './images/map1.jpg'
@@ -137,7 +137,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-     skipDay, travel
+     skipDay, travel, randomizeCars
   }, dispatch)
 );
 
