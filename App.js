@@ -32,7 +32,7 @@ export default function App() {
       <Stack.Screen
           name="Map"
           component={Map}
-          options={{ title: 'Welcome' }}
+          
         />
         <Stack.Screen
           name="Battle"
@@ -51,7 +51,7 @@ export default function App() {
         <Stack.Screen
           name="Park"
           component={Park}
-          options={{ title: 'Welcome' }}
+          
         />
         <Stack.Screen
           name="Travel"

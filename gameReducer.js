@@ -4,7 +4,7 @@ import thug1 from './app/images/thug1.png'
 import pistol1 from './app/images/pistol1.png'
 import assult1 from './app/images/assult1.png'
 import smg1 from './app/images/smg1.png'
-import {REDUCE_HEAT, SHOOT_PLAYER, TRAVEL} from './types'
+import {RANDOMIZE_CARS, REDUCE_HEAT, SHOOT_PLAYER, TRAVEL} from './types'
 import {SHOOT_PARTY, SKIP_DAY} from './types'
 import update from 'react-addons-update';
 import locations from './app/locations/index'
@@ -46,6 +46,10 @@ const INITIAL_STATE = {
   hk7
   ],
   heat: 30,
+  park: {
+    name:'Oaxaca City National',
+    cars: []
+  },
   city_heat: {
     puerto_vallerta:30,
     oaxaca_city: 20,
@@ -130,6 +134,17 @@ const gameReducer = (state = INITIAL_STATE, action) => {
         if(state.heat > defaultHeat){
           var newState = {...state, heat:state.heat-action.payload.reduceVal}
         }
+        return newState
+
+        case RANDOMIZE_CARS:
+        var defaultHeat = 25;
+          var cars = action.payload.cars
+          var newState = {...state, park:{
+            name: action.payload.name,
+            cars: cars
+          }}
+        
+        return newState
       
     case SHOOT_PARTY:
       //console.log(action)

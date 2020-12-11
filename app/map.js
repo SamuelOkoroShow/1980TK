@@ -6,6 +6,9 @@ import { bindActionCreators } from 'redux';
 import Location from './location'
 import map1 from './images/map1.jpg'
 import {Ionicons } from '@expo/vector-icons';
+import { Acura, Audi, Aston_Martin, Ambulance, BMW, Camaro, Deawoo, Ford, Harley_Davidson, Honda, Isuzu, Lamborghini, Scooter, Tesla, Truck, Toyota, Kawasaki, Mercedes, Volkswagen} from './cars/index'
+var cars_array = [Acura, Audi, Aston_Martin, Ambulance, BMW, Camaro, Deawoo, Ford, Harley_Davidson, Honda, Isuzu, Lamborghini, Scooter, Tesla, Truck, Toyota, Kawasaki, Mercedes, Volkswagen]
+
 const BASIC = '#ddd'
 const RED = "#f96062"
 const GREEN = "#37c94c"
@@ -87,8 +90,20 @@ const Map = (props) => {
   }
 
   const newLocation = () => {
-    console.log(scene)
-    props.navigation.navigate(scene)
+    //console.log(scene)
+    if(scene == "Park"){
+      console.log("number_o_cars")
+        var cars_parked = [];
+        var number_o_cars = getRandomArbitrary(1,6);
+        console.log(number_o_cars)
+        for (var i =0; i<number_o_cars; i++){
+            var j = getRandomArbitrary(0,cars_array.length);
+                cars_parked= [...cars_parked, cars_array[j]]
+                
+            }
+      props.randomizeCars({name:map_name, cars: cars_parked})
+    }
+    props.navigation.push(scene)
   }
 
 
