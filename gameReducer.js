@@ -4,7 +4,7 @@ import thug1 from './app/images/thug1.png'
 import pistol1 from './app/images/pistol1.png'
 import assult1 from './app/images/assult1.png'
 import smg1 from './app/images/smg1.png'
-import {RANDOMIZE_CARS, REDUCE_HEAT, SHOOT_PLAYER, TRAVEL} from './types'
+import {ADD_CAR, ADD_HEAT, RANDOMIZE_CARS, REDUCE_HEAT, REMOVE_PARTY_MEMBER, SHOOT_PLAYER, TRAVEL} from './types'
 import {SHOOT_PARTY, SKIP_DAY} from './types'
 import update from 'react-addons-update';
 import locations from './app/locations/index'
@@ -120,7 +120,7 @@ const gameReducer = (state = INITIAL_STATE, action) => {
       //console.log(newState)
       return state
 
-      case SKIP_DAY:
+    case SKIP_DAY:
         console.log("skip day")
       var newState = {
         ...state,
@@ -129,21 +129,50 @@ const gameReducer = (state = INITIAL_STATE, action) => {
       
       return newState
 
-      case REDUCE_HEAT:
+    case REDUCE_HEAT:
         var defaultHeat = 25;
         if(state.heat > defaultHeat){
           var newState = {...state, heat:state.heat-action.payload.reduceVal}
         }
         return newState
 
-        case RANDOMIZE_CARS:
-        var defaultHeat = 25;
+    case RANDOMIZE_CARS:
+        var defaultHeat = 15;
           var cars = action.payload.cars
           var newState = {...state, park:{
             name: action.payload.name,
             cars: cars
           }}
         
+        return newState
+    case REMOVE_PARTY_MEMBER:
+          var newArr = [...state.party]
+          newArr = newArr.splice(action.payload.id,1)
+          var newState = {...state, party:newArr}
+          
+          return newState
+    case ADD_CAR:
+          var cars = {...state.cars}
+          if(state.cars.length < 2){
+            cars.push(action.payload.car)
+          }
+          var newState = {...state, cars:cars}
+          return newState
+    case ADD_ITEM:
+          var items = {...state.inventory}
+          if(state.inventory.length < 7){
+            items.push(action.payload.item)
+          }
+          var newState = {...state, inventory:items}
+          return newState
+
+    case ADD_HEAT:
+      var maxtHeat = 100;
+        if(state.heat+action.payload.heatVal < maxHeat){
+          var newState = {...state, heat:state.heat+action.payload.heatVal}
+        }else{
+          var newState = {...state, heat:maxtHeat}
+        }
         return newState
       
     case SHOOT_PARTY:
