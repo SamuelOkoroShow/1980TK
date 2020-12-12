@@ -4,7 +4,7 @@ import thug1 from './app/images/thug1.png'
 import pistol1 from './app/images/pistol1.png'
 import assult1 from './app/images/assult1.png'
 import smg1 from './app/images/smg1.png'
-import {ADD_CAR, ADD_HEAT, RANDOMIZE_CARS, REDUCE_HEAT, REMOVE_PARTY_MEMBER, SHOOT_PLAYER, TRAVEL} from './types'
+import {ADD_CAR, ADD_HEAT, ADD_PARTY_MEMBER, RANDOMIZE_CARS, REDUCE_HEAT, REMOVE_PARTY_MEMBER, SHOOT_PLAYER, TRAVEL} from './types'
 import {SHOOT_PARTY, SKIP_DAY} from './types'
 import update from 'react-addons-update';
 import locations from './app/locations/index'
@@ -164,6 +164,14 @@ const gameReducer = (state = INITIAL_STATE, action) => {
             items.push(action.payload.item)
           }
           var newState = {...state, inventory:items}
+          return newState
+    case ADD_PARTY_MEMBER:
+          const MAX_PARTY_SIZE = 3
+          var party = {...state.party}
+          if(state.party.length < MAX_PARTY_SIZE){
+            party.push(action.payload.partyMember)
+          }
+          var newState = {...state, party:party}
           return newState
 
     case ADD_HEAT:

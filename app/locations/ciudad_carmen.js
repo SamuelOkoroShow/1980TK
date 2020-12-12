@@ -5,6 +5,7 @@ import park1 from '../images/park1.png'
 import park2 from '../images/park2.png'
 import park3 from '../images/park3.png'
 import travel from '../images/travel.png'
+import hospital from '../images/hospital.png'
 const windowWidth = Dimensions.get('window').width;
 const OSET = 0;
 
@@ -18,8 +19,14 @@ const ciudadMap = [{
 	x: 230,
 	y: 0,
   img: thug,
-  navigate: "Battle",
+  navigate: "Gang",
   name:"Street Gang"
+},{
+	x: 130,
+	y: 0,
+  img: hospital,
+  navigate: "Hospital",
+  name:"Hospital"
 },
 {
 	x: 150,

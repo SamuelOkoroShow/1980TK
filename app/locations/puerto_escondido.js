@@ -18,7 +18,7 @@ const escondidoMap = [{
 	x: 230,
 	y: 0,
   img: thug,
-  navigate: "Battle",
+  navigate: "Gang",
   name:"Street Gang"
 },{
 	x: 50,
