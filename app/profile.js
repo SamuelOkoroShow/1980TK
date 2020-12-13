@@ -3,7 +3,7 @@ import React from 'react';
 import {View,ScrollView, TouchableOpacity, Dimensions, Image, Text, Animated} from 'react-native'
 import { connect } from 'react-redux';
 const windowHeight = Dimensions.get('window').height;
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const SECTION_HEIGHT = windowHeight/5;
 const windowWidth = Dimensions.get('window').width;
@@ -16,7 +16,11 @@ const PARTY_IMG = PARTY_MEMBER-10;
 const Profile = (props) => {
 
 	const Nav = () => {
-		return(<View style={{height:50, backgroundColor:'tomato'}}></View>)
+		return(<View style={{height:50, backgroundColor:'tomato'}}>
+			<TouchableOpacity onPress = {() => props.navigation.pop()} style={{width:50, height:50, backgroundColor:'tomato', borderRadius:25, justifyContent:'center', alignItems:'center', position:'absolute', left:10, top:10}}>
+            <Ionicons name={"ios-map"} size={25} color="#fff" />
+            </TouchableOpacity>
+		</View>)
 	}
 	const animatedVal = React.useRef(new Animated.Value(0)).current;
 	const [fold, setfold] = React.useState(0)
