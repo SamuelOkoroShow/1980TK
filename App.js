@@ -13,6 +13,8 @@ import Battle from './app/battle'
 import Inventory from './app/inventory'
 import Travel from './app/travel'
 import Park from './app/park'
+import Gang from './app/gang'
+import Hospital from './app/hospital'
 import Contact from './app/contact'
 
 const Stack = createStackNavigator();
@@ -37,7 +39,6 @@ export default function App() {
         <Stack.Screen
           name="Battle"
           component={Battle}
-          options={{ title: 'Welcome' }}
         />
          <Stack.Screen
           name="Profile"
@@ -46,7 +47,6 @@ export default function App() {
         <Stack.Screen
           name="Inventory"
           component={Inventory}
-          options={{ title: 'Welcome' }}
         />
         <Stack.Screen
           name="Park"
@@ -56,12 +56,18 @@ export default function App() {
         <Stack.Screen
           name="Travel"
           component={Travel}
-          options={{ title: 'Welcome' }}
         />
         <Stack.Screen
           name="Contact"
           component={Contact}
-          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen
+          name="Hospital"
+          component={Hospital}
+        />
+        <Stack.Screen
+          name="Gang"
+          component={Gang}
         />
         </Stack.Navigator>
         </NavigationContainer>

@@ -22,7 +22,6 @@ const puertoMap = [{
   navigate: "Gang",
   name:"Street Gang"
 },{
-},{
 	x: 60,
 	y: 0,
   img: hospital,

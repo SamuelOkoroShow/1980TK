@@ -25,7 +25,13 @@ const escondidoMap = [{
 	y: 20,
   img: contact,
   navigate:'Contact',
-  name:'Unique Contact.'
+  name:'Unique Contact'
+},{
+	x: 50,
+	y: 20,
+  img: travel,
+  navigate:'Travel',
+  name:'Travel'
 },{
 	x: 450,
   y: 0,

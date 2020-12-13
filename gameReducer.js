@@ -4,7 +4,7 @@ import thug1 from './app/images/thug1.png'
 import pistol1 from './app/images/pistol1.png'
 import assult1 from './app/images/assult1.png'
 import smg1 from './app/images/smg1.png'
-import {ADD_CAR, ADD_HEAT, ADD_PARTY_MEMBER, RANDOMIZE_CARS, REDUCE_HEAT, REMOVE_PARTY_MEMBER, SHOOT_PLAYER, TRAVEL} from './types'
+import {ADD_CAR, ADD_HEAT, ADD_PARTY_MEMBER, ADD_ITEM, RANDOMIZE_CARS, REDUCE_HEAT, REMOVE_PARTY_MEMBER, SHOOT_PLAYER, TRAVEL} from './types'
 import {SHOOT_PARTY, SKIP_DAY} from './types'
 import update from 'react-addons-update';
 import locations from './app/locations/index'
@@ -45,17 +45,17 @@ const INITIAL_STATE = {
   inventory: [
   hk7
   ],
-  heat: 30,
+  heat: 50,
   park: {
     name:'Oaxaca City National',
     cars: []
   },
   city_heat: {
-    puerto_vallerta:30,
+    puerto_vallarta:15,
     oaxaca_city: 20,
     puerto_escondido: 40,
     ciudad_carmen: 30,
-    tabasco: 30
+    tabasco: 100
 
   },
  city: locations[0],

@@ -55,23 +55,7 @@ const Map = (props) => {
     }
   }
 
-  const heat_bar = () => {
-    var city_heat
-    var heat_width = props.game.heat
-    switch (props.game.city.name) {
-      case "Puerto Vallarta":
-      city_heat = props.game.city_heat.puerto_vallarta
-      case "Oaxaca City":
-      city_heat = props.game.city_heat.oaxaca_city
-      default: 
-      city_heat = props.game.city_heat.puerto_vallarta
-    }
-        
-    return(<View style={{width:HEAT_BAR, justifyContent:'center', borderWidth:1, borderColor:'#444', flexDirection:'row'}}>
-      <View style = {{backgroundColor:RED, width}} />
-      <View style = {{backgroundColor:ORANGE, width}} />
-    </View>)
-  }
+
 
   const police_search = () => {
     // Police are searching
@@ -109,14 +93,17 @@ const Map = (props) => {
 
   return (
     <ImageBackground source={map1} style = {{flex:1, width:null, height:null, justifyContent:'flex-end', borderRadius:10, padding:20}}>
-    <FlatList
+    {/* {<FlatList
     style = {{alignSelf:'center'}}
     contentContainerStyle= {{alignItems:'flex-start', borderRadius:10, justifyContent: 'center',flex: 1, backgroundColor:'rgba(255,255,255,0.1)'}}
       bounce = {false}
       style = {{marginBottom:10 }}
       data = {props.game.city.map}
       keyExtractor={(item,index) => item.name}
-      renderItem = {(items) => <Location setScene = {setScene}  setMapName = {setMapName} locations = {items}/>} />
+      renderItem = {(items) => <Location setScene = {setScene}  setMapName = {setMapName} locations = {items}/>} />} */}
+      <View style={{marginBottom:100, justifyContent:'center'}}>
+      {props.game.city.map.map((items) => <Location setScene = {setScene}  setMapName = {setMapName} locations = {items}/>)}
+      </View>
     <View style={{backgroundColor:'#c0a47c', flexDirection:'row', justifyContent:'space-between', borderWidth:1, bordercolor:'#333', alignItems:'center'}}>
       <View />
       <Text style={{alignSelf:'center', color:"#252015", fontWeight:'bold'}}>{map_name}</Text>
@@ -126,7 +113,7 @@ const Map = (props) => {
       </TouchableOpacity>:
       <View />}
     </View>
-    <Menu skipDay={onSkipDay} scene={scene} game = {props.game} />
+    <Menu skipDay={onSkipDay} navigation = {props.navigation} scene={scene} game = {props.game} />
     </ImageBackground>
   )
 }
