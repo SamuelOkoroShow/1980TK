@@ -45,7 +45,9 @@ const Speed = ({speed}) => {
     }
     const Parked = (data) => {
         //console.log(data)
-        var condition = getRandomArbitrary(10,100) ;
+        //var condition = getRandomArbitrary(10,100) ;
+        var condition = data.condition
+        
         var variance = MAX_CONDITION - condition
         var price = condition/MAX_CONDITION * data.price
         price = Math.round(price * 100) / 100

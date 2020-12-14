@@ -4,7 +4,7 @@ import thug1 from './app/images/thug1.png'
 import pistol1 from './app/images/pistol1.png'
 import assult1 from './app/images/assult1.png'
 import smg1 from './app/images/smg1.png'
-import {ADD_CAR, ADD_HEAT, ADD_PARTY_MEMBER, ADD_ITEM, RANDOMIZE_CARS, REDUCE_HEAT, REMOVE_PARTY_MEMBER, SHOOT_PLAYER, TRAVEL} from './types'
+import {ADD_CAR, ADD_HEAT, ADD_PARTY_MEMBER, ADD_ITEM, RANDOMIZE_CARS, REDUCE_HEAT, REMOVE_PARTY_MEMBER, SHOOT_PLAYER, TRAVEL, RECOVER_HP} from './types'
 import {SHOOT_PARTY, SKIP_DAY} from './types'
 import update from 'react-addons-update';
 import locations from './app/locations/index'
@@ -182,6 +182,24 @@ const gameReducer = (state = INITIAL_STATE, action) => {
           var newState = {...state, heat:maxtHeat}
         }
         return newState
+    case RECOVER_HP:
+      // irst we need to get the player
+        if(action.payload.id == 0){
+          var player = {...state.player}
+          
+          if(state.player.hp + action.payload.recover >= player.maxHp){
+            player.hp = player.maxHp
+          }else{
+            player.hp = state.player.hp + action.payload.recover
+          }
+        }else{
+            var party = {...state.party}
+            if(state.party[action.payload.id -1].hp + action.payload.recover >= party[action.payload.id].maxHp){
+              party[action.payload.id].hp = party[action.payload.id].maxHp
+            }else{
+              party[action.payload.id].hp = state.party[action.payload.id].hp + action.payload.recover
+            }
+        }
       
     case SHOOT_PARTY:
       //console.log(action)

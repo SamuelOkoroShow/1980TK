@@ -19,6 +19,7 @@ const numColumns = 3;
 const BASIC = '#ddd'
 const RED = "#f96062"
 const GREEN = "#b7eb9b"
+var survivor = true;
 
 function Battle(props) {
     const [enemies, setEnemies] = useState([{...police[0], hp:100},{...police[1], hp:100},{...police[0], hp:100},{...police[1], hp:100} ])

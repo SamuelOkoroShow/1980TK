@@ -76,13 +76,15 @@ const Map = (props) => {
   const newLocation = () => {
     //console.log(scene)
     if(scene == "Park"){
-      console.log("number_o_cars")
+      //console.log("number_o_cars")
         var cars_parked = [];
         var number_o_cars = getRandomArbitrary(1,6);
         console.log(number_o_cars)
         for (var i =0; i<number_o_cars; i++){
             var j = getRandomArbitrary(0,cars_array.length);
-                cars_parked= [...cars_parked, cars_array[j]]
+            var car = cars_array[j]
+            car.condition = getRandomArbitrary(5,100)
+                cars_parked= [...cars_parked, car]
                 
             }
       props.randomizeCars({name:map_name, cars: cars_parked})
@@ -102,7 +104,7 @@ const Map = (props) => {
       keyExtractor={(item,index) => item.name}
       renderItem = {(items) => <Location setScene = {setScene}  setMapName = {setMapName} locations = {items}/>} />} */}
       <View style={{marginBottom:100, justifyContent:'center'}}>
-      {props.game.city.map.map((items) => <Location setScene = {setScene}  setMapName = {setMapName} locations = {items}/>)}
+      {props.game.city.map.map((items,index) => <Location key={items.name} setScene = {setScene}  setMapName = {setMapName} locations = {items}/>)}
       </View>
     <View style={{backgroundColor:'#c0a47c', flexDirection:'row', justifyContent:'space-between', borderWidth:1, bordercolor:'#333', alignItems:'center'}}>
       <View />
