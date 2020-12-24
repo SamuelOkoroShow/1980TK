@@ -30,19 +30,19 @@ const ciudadMap = [{
 },
 {
 	x: 150,
-	y: 100,
+	y: 0,
   img: park2,
   navigate:'Park',
   name:'Mundo Parking Lot'
 },{
 	x: 130,
-  y: 100,
+  y: 0,
   navigate:'Travel',
   img: travel,
   name:'Travel'
 },{
 	x: 50,
-	y: 20,
+	y: 0,
   img: store,
   navigate:'Store',
   name:'Store'

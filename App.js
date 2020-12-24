@@ -16,6 +16,7 @@ import Park from './app/park'
 import Gang from './app/gang'
 import Hospital from './app/hospital'
 import Contact from './app/contact'
+import Steal from './app/steal'
 
 const Stack = createStackNavigator();
 const store = createStore(gameReducer);
@@ -68,6 +69,10 @@ export default function App() {
         <Stack.Screen
           name="Gang"
           component={Gang}
+        />
+        <Stack.Screen
+          name="Steal"
+          component={Steal}
         />
         </Stack.Navigator>
         </NavigationContainer>

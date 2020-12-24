@@ -2,24 +2,30 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { healHP, recoverHP } from '../actions'
+import { bindActionCreators } from 'redux';
+import { healHP, recoverHP, skipDay } from '../actions'
 import hosp from './images/hospital.png'
+import { ScrollView } from 'react-native-gesture-handler'
 //import { useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const HP_SIZE = 120
 const PRICE_COLOR = "#07c05a"
-var run;
+var healing = []
 
 const hospital = (props) => {
-    const [party, set_party] = useState([{...props.game.player, selected:true}]);
-
+    const [party, set_party] = useState([{...props.game.player, selected:false}]);
+    const [run, set_run] = useState(false)
+    const [healing_cost, set_healing_cost] = useState(0)
+    
+    
     function setPartyProps(){
-        run = true
+        set_run(true)
         var newParty2 = [...party];
         if(props.game.party.length > 0){
             for(var i = 0; i< props.game.party.length; i++){
             console.log(i)
-            newParty2[i+1] = {...props.game.party[i], selected:true} 
+            newParty2[i+1] = {...props.game.party[i], selected:false} 
             //newParty2.push(props.game.party[i])
             //console.log(newParty.length)
             set_party(newParty2)
@@ -28,9 +34,6 @@ const hospital = (props) => {
         }
         setTimeout(() => { if(!run){ setPartyProps();} }, 300);
 
-
-    
-    console.log("About to use e")
  
     var newParty = [...party]
 
@@ -46,14 +49,15 @@ const hospital = (props) => {
         healthColor = "#b7eb9b"
       }
       return(<View style={{height:6, width:HP_SIZE, borderColor:'#667', borderWidth:1}}>
-      <View style={{height:4, width:health, backgroundColor:healthColor, borderRadius:5}} />
+      <View style={{height:4, width:health-2, backgroundColor:healthColor, borderRadius:5}} />
       </View>)
   }
 
     const toggle = (data) => {
 
         var newParty = [...party];
-        
+        healing.push(data)
+        set_healing_cost(healing_cost+375)
         //console.log(data)
         newParty[data] = {...newParty[data], selected:true}
         //console.log(newParty)
@@ -65,11 +69,52 @@ const hospital = (props) => {
 
         var newParty = [...party];
         //console.log(party[data].selected)
+        var removeIndex = healing.map(item => item)
+                       .indexOf(data);
+        // There's a weird hiccup in Zero and 10.
+        set_healing_cost(healing_cost-375)
+
+        healing.splice(removeIndex, 1);
         newParty[data] = {...newParty[data], selected:false}
         //console.log(newParty)
         set_party(newParty)
         //console.log(party[data].selected)
 
+    }
+    const getRandomArbitrary = (min, max) => {
+        // excludes the max
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    const heal = () => {
+        if(healing.length > 0){
+        var recover = getRandomArbitrary(15,30);
+        if(props.game.money - healing_cost >= 0){
+            // charge money
+            for(var i = 0; i<healing.length; i++){
+                var j = healing[i]
+            props.healHP({recover:recover, charge: 375, id:j})
+            var newParty = [...party]
+            if(newParty[j].hp + recover > newParty[j].maxHp){
+                newParty[j].hp = newParty[j].maxHp
+            }else{
+            newParty[j].hp = newParty[j].hp + recover
+            }
+            
+        }    
+        set_party(newParty)
+        console.log(run)
+    }
+        console.log(props.game.party[1].hp)
+        props.skipDay('day')}
+    }
+
+    function numberWithCommas(x) {
+        x = x.toString();
+        var pattern = /(-?\d+)(\d{3})/;
+        while (pattern.test(x))
+            x = x.replace(pattern, "$1,$2");
+        return x;
     }
 
     const Party = (data) =>{
@@ -135,8 +180,6 @@ const hospital = (props) => {
         return (
             <View style={{flex:1}}>
                 <Image source = {hosp} resizeMode="cover" style={{width:'100%', height:120}}/>
-                {//party.map((data,index) => <Party index = {index} key = {data.name} {...data} />)
-                }
                 <FlatList 
                 data = {party}
                 style = {{marginTop:-10, flex:1 }}
@@ -144,12 +187,28 @@ const hospital = (props) => {
                 extraData = {party}
                 renderItem = {(data,index) => <Party data = {data} />}
             />
-            <Text>{party[0].selected.toString()}</Text>
-            <View style={{backgroundColor:'white', height:70, width:"100%", alignItems:'center',flexDirection:'row' }}>
-                <TouchableOpacity style={{backgroundColor:PRICE_COLOR, height:50, alignItems:'center', justifyContent:'center', padding:10}}>
+            <View style={{backgroundColor:'white', height:120, width:"100%", justifyContent:'space-between', alignItems:'center',flexDirection:'row' }}>
+                <ScrollView
+                    contentContainerStyle = {{backgroundColor:'white', width:"100%", justifyContent:'space-between', alignItems:'center',flexDirection:'row' }}
+                >
+                <View style={{justifyContent:'space-between'}}>
+                    <View>
+                    <Text> Medical bill: $ {healing_cost}</Text>
+                    <Text> Day : # <Text style={{fontWeight:'bold'}}>{props.game.day}</Text></Text>
+                    <Text> <Text style={{backgroundColor:"tomato", color:'white', padding:5}}>Money :</Text> $ {numberWithCommas(props.game.money)}</Text>
+                    </View>
+                    <View style={{marginLeft:15}}>
+                        {healing.map((data) => <Text key={data} style={{backgroundColor:PRICE_COLOR, marginTop:0, borderRadius:2, padding:2, color:'white',}}>{(data != 0)?props.game.party[data-1].name.toString(): props.game.player.name.toString()}</Text>)}
+                    </View>
+                </View>
+                <TouchableOpacity onPress={heal} style={{backgroundColor:PRICE_COLOR, marginRight:10, borderRadius:3, height:50, alignItems:'center', justifyContent:'center', padding:10}}>
                     <Text style={{color:'white'}}>HEAL</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
+            <TouchableOpacity onPress = {() => props.navigation.navigate('Map')} style={{width:50, height:50, backgroundColor:'tomato', borderRadius:25, justifyContent:'center', alignItems:'center', position:'absolute', left:10, top:10}}>
+            <Ionicons name={"ios-close"} size={25} color="#fff" />
+            </TouchableOpacity>
             </View>)
 }
 
@@ -158,8 +217,10 @@ const mapStateToProps = (state) => {
     return { game }
 }
 
-const mapDispatchToProps = {
-    
-}
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        skipDay, healHP, recoverHP
+     }, dispatch)
+)
 
-export default connect(mapStateToProps)(hospital)
+export default connect(mapStateToProps, mapDispatchToProps)(hospital)

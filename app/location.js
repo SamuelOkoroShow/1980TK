@@ -6,7 +6,7 @@ const LOCATION_SIZE = 60;
 var coordinates = {x:0,y:0};
 
 const Location = (props) => {
-	console.log(props)
+	//console.log(props)
 	const newScene = () => {
 		props.setMapName(props.locations.name)
 		props.setScene(props.locations.navigate)

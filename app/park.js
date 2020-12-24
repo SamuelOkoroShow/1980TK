@@ -3,7 +3,11 @@ import { View, Text, FlatList, ScrollView, Image, TouchableOpacity } from 'react
 import { Acura, Audi, Aston_Martin, Ambulance, BMW, Camaro, Deawoo, Ford, Harley_Davidson, Honda, Isuzu, Lamborghini, Scooter, Tesla, Truck, Toyota, Kawasaki, Mercedes, Volkswagen} from './cars/index'
 var cars_array = [Acura, Audi, Aston_Martin, Ambulance, BMW, Camaro, Deawoo, Ford, Harley_Davidson, Honda, Isuzu, Lamborghini, Scooter, Tesla, Truck, Toyota, Kawasaki, Mercedes, Volkswagen]
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { steal } from '../actions';
 import {Ionicons } from '@expo/vector-icons';
+import park1 from './images/park1.png'
+
 const CONDITION_BAR = 120;
 const CONDITION_COLOR = '#a470fc'
 const MAX_CONDITION = 100;
@@ -101,34 +105,52 @@ const Speed = ({speed}) => {
         </TouchableOpacity>)
     }
 
+    const steal = () =>{
+        props.steal({car: car_selected})
+        props.navigation.navigate('Steal')
+    }
+
     return (
         <View style={{flex:1}}>
+            <Image source={park1} resizeMode="cover" style={{width:"100%", height:100}} />
             {/* {<FlatList
             data = {cars_array}
             keyExtractor = {(item) => item.name}
             renderItem = {(data) => <Parked {...data} />}
             />} */}
             <View>
-        <Text style={{fontSize:20, textAlign:'center',margin:50}}>{props.game.park.name}</Text>
+        <Text style={{fontSize:20, textAlign:'center',margin:50, marginTop:-50, color:'white'}}>{props.game.park.name}</Text>
             </View>
             <ScrollView>
-            {props.game.park.cars.map((data) => <Parked key={data.name} {...data} />)}
+            {props.game.park.cars.map((data, index) => <Parked key={index+1} {...data} />)}
             </ScrollView>
             <TouchableOpacity onPress = {() => props.navigation.navigate('Map')} style={{width:50, height:50, backgroundColor:'tomato', borderRadius:25, justifyContent:'center', alignItems:'center', position:'absolute', left:10, top:10}}>
             <Ionicons name={"ios-close"} size={25} color="#fff" />
             </TouchableOpacity>
             {(car_selected.name)?<View style={{height:70, alignItems:'center', justifyContent:'space-between', flexDirection:'row', backgroundColor:'white'}}>
                 <View style={{alignItems:'center', flexDirection:'row'}}>
-                    <Image source= {car_selected.image} style={{width:50, height:50}} resizeMode="contain" />
+                    <Image source= {car_selected.image} style={{width:50, height:50, marginHorizontal:10}} resizeMode="contain" />
                         <View style={{justifyContent:'space-between', height:40}}>
                             <Text>{car_selected.name}</Text>
                             <Condition condition = {car_selected.condition} />
                             <Speed speed = {car_selected.speed} />
                         </View>
                 </View>
-                <TouchableOpacity style={{backgroundColor:PRICE_COLOR, marginRight:10, padding :10, borderRadius:2}}>
-                            <Text style={{color:'white',fontSize:11, }}>STEAL!</Text>
+                <View style = {{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                <TouchableOpacity style={{backgroundColor:'tomato', marginRight:10,shadowColor: '#000',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.8, borderRadius:5,
+        borderColor:'white',
+        elevation: 2, padding :10, paddingHorizontal:15, borderRadius:2}}>
+                            <Text style={{color:'white',fontSize:10, }}>RACE!</Text>
                         </TouchableOpacity>
+                <TouchableOpacity onPress={steal} style={{backgroundColor:PRICE_COLOR,shadowColor: '#000',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.8, borderRadius:5,
+        borderColor:'white',
+        elevation: 2, marginRight:10, padding :10, paddingHorizontal:15, borderRadius:2}}>
+                            <Text style={{color:'white',fontSize:10, }}>STEAL!</Text>
+                        </TouchableOpacity></View>
             </View>:null}
         </View>)
 }
@@ -136,5 +158,10 @@ const mapStateToProps = (state) => {
     const { game } = state
     return { game }
   };
+  const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+       steal
+    }, dispatch)
+  );
   
-  export default connect(mapStateToProps)(Park);
+  export default connect(mapStateToProps, mapDispatchToProps)(Park);

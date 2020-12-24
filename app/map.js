@@ -94,7 +94,13 @@ const Map = (props) => {
 
 
   return (
-    <ImageBackground source={map1} style = {{flex:1, width:null, height:null, justifyContent:'flex-end', borderRadius:10, padding:20}}>
+    <ImageBackground source={map1} style = {{flex:1, width:null, height:null, justifyContent:'space-between', borderRadius:10, padding:20}}>
+    <View style={{backgroundColor:'#c0a47c', flexDirection:'row', height:50, justifyContent:'space-between', borderWidth:1, bordercolor:'#333', alignItems:'center'}}>
+      <View />
+      <Text style={{alignSelf:'center', color:"#252015", fontWeight:'bold'}}>{map_name}</Text>
+      
+      <View />
+    </View>
     {/* {<FlatList
     style = {{alignSelf:'center'}}
     contentContainerStyle= {{alignItems:'flex-start', borderRadius:10, justifyContent: 'center',flex: 1, backgroundColor:'rgba(255,255,255,0.1)'}}

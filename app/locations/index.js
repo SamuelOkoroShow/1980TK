@@ -1,8 +1,8 @@
 import puerto_vallarta from './puerto_vallarta'
 import oaxaca_city from './oaxaca_city'
 import puerto_escondido from './puerto_escondido'
-import ciudad_carmen from './puerto_vallarta'
-import tabasco from './puerto_vallarta'
+import ciudad_carmen from './ciudad_carmen'
+import tabasco from './tabasco'
 
 const Locations = [
     {

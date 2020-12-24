@@ -1,4 +1,4 @@
-import {SHOOT_PLAYER, SHOOT_PARTY, SKIP_DAY, REDUCE_HEAT, TRAVEL, RANDOMIZE_CARS, REMOVE_PARTY_MEMBER, ADD_CAR, ADD_HEAT, ADD_ITEM, ADD_PARTY_MEMBER, HEAL_HP, RECOVER_HP} from './types'
+import {SHOOT_PLAYER, SHOOT_PARTY, SKIP_DAY, REDUCE_HEAT, TRAVEL, STEAL, RANDOMIZE_CARS, REMOVE_PARTY_MEMBER, ADD_CAR, ADD_HEAT, ADD_ITEM, ADD_PARTY_MEMBER, HEAL_HP, RECOVER_HP} from './types'
 
 export const shootPlayer = damageIndex => (
     {
@@ -53,6 +53,10 @@ export const shootPlayer = damageIndex => (
       payload: hp,
     });
 
+  export const steal = car => ({
+    type: STEAL,
+    payload: car
+  })
     export const addPartyMember = partyMember => (
       {
         type: ADD_PARTY_MEMBER,

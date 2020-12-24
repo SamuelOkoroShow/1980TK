@@ -66,11 +66,12 @@ const HP = () => {
  }
 
   const Names = () => {
+	  console.log(props.game.party)
   	return props.game.party.map((party,index) => {
   				if(index == props.game.party.length-1){
-  					 return(<Text style={{color:'#bbb'}}>{party.name}</Text>)
+  					 return(<Text key={party.name} style={{color:'#bbb'}}>{party.name}</Text>)
   				}else{
-  					 return(<Text style={{color:'#bbb'}}>{party.name},</Text>)
+  					 return(<Text key={party.name} style={{color:'#bbb'}}>{party.name},</Text>)
   					    	}
 	    	});
   }
@@ -109,7 +110,7 @@ const HP = () => {
 
   const Party = () => {
   	return props.game.party.map((party,index) => {
-  	return(<Animated.View style={{height:animatedVal.interpolate({
+  	return(<Animated.View key = {party.name} style={{height:animatedVal.interpolate({
 				inputRange:[0,1],
 				outputRange:[PARTY_MEMBER, PARTY_MEMBER*2]
 			}), backgroundColor:'#000',shadowColor: '#333',

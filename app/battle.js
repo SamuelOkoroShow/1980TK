@@ -125,7 +125,7 @@ function Battle(props) {
         }
         //console.log(target)
         if(props.game.player.hand.gun.name != null){
-            var delay = index * 1500
+            var delay = index * 600
             setTimeout(function(){ _playShot(); }, delay);
             fired = {
                 dialog:player.name + ' fired a ' + props.game.player.hand.gun.name + ".",

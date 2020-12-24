@@ -11,7 +11,7 @@ const OSET = 0;
 
 const puertoMap = [{
 	x: 50,
-	y: 20,
+	y: 0,
   img: store,
   navigate:'Store',
   name:'Store'
@@ -36,7 +36,7 @@ const puertoMap = [{
 },
 {
 	x: 30,
-	y: 30,
+	y: 0,
   img: park2,
   navigate:'Park',
   name:'Northside Parking Lot'

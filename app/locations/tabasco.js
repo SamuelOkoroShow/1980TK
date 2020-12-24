@@ -22,13 +22,13 @@ const escondidoMap = [{
   name:"Street Gang"
 },{
 	x: 150,
-	y: 20,
+	y: 0,
   img: contact,
   navigate:'Contact',
   name:'Unique Contact.'
 },{
 	x: 150,
-  y: 100,
+  y: 0,
   navigate:'Travel',
   img: travel,
   name:'Travel'

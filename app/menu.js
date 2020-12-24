@@ -49,24 +49,6 @@ const Menu = (props) => {
 		heatz = (maxHeat - (city_heat*maxHeat/HEAT_BAR)) - 2
 		
 	}
-	
-    // switch (props.game.city.name) {
-    //   case "Puerto Vallarta":
-    //   set_city_heat((props.game.city_heat.puerto_vallarta/maxHeat) * HEAT_BAR)
-    //   case "Oaxaca City":
-	// 	set_city_heat(props.game.city_heat.oaxaca_city)
-    //   case "Puerto Escondido":
-	// 	set_city_heat(props.game.city_heat.puerto_escondido)
-    //   case "Ciudad Carmen":
-	// 	set_city_heat(props.game.city_heat.ciudad_carmen)
-    //   case "Tabasco":
-	// 	set_city_heat(50)
-    //   default: 
-    //   set_city_heat(props.game.city_heat.puerto_vallarta)
-	// }
-
-	
-	//var cityHeat = (city_heat/maxHeat) * HEAT_BAR;  
 
 	return(<View style={{width:HEAT_BAR, height:5, alignItems:'center', padding:0, borderWidth:1, borderColor:'#444', flexDirection:'row'}}>
       <View style = {{backgroundColor:CITY_HEAT_COLOR, width:city_heat, height:3}} />

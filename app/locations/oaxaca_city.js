@@ -10,7 +10,7 @@ const OSET = 0;
 
 const oaxacaMap = [{
 	x: 50,
-	y: 20,
+	y: 0,
   img: contact,
   navigate:'Contact',
   name:'Unique Contact.'
@@ -28,13 +28,13 @@ const oaxacaMap = [{
   name:"Street Gang"
 },{
 	x: 130,
-  y: 100,
+  y: 0,
   navigate:'Travel',
   img: travel,
   name:'Travel'
 },{
 	x: 130,
-	y: 100,
+	y: 0,
   img: park3,
   navigate:'Park',
   name:'Eastside Parking Lot'
