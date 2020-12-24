@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { travel, skipDay } from '../actions';
 const BASIC = '#333'
 const RED = "#f96062"
-const GREEN = "#b7eb9b"
+const GREEN = "#07c05a"
 const CITY_HEAT_COLOR = "#b90000"
 const HEAT_COLOR = "#ed832e"
 const HEAT_BAR = 80;
@@ -33,6 +33,7 @@ const Steal = (props) => {
     const [steal_action, set_steal_action] = useState("Break In")
     const [city_heat, set_city_heat] = useState(props.game.city_heat.puerto_vallarta)
     const [distance, set_distance] = useState(distanceLoad)
+    const [car, set_car] = useState(props.game.stealing)
 
     const Dialog_box = (props) => {
         return(<View style={{height:400, padding:10, backgroundColor:'#ddd'}}><ScrollView
@@ -96,12 +97,135 @@ const Steal = (props) => {
     }
 
     const Steal_Action = () => {
+        var newTurn = true;
         if(steal_action == "Break In"){
             //check items
             var hasHammer = false
+            var hammer_owner = ""
+            if(props.game.player.hand.isHammer){
+                hasHammer = true
+                hammer_owner = props.game.player.name
+            }
+            if(props.game.player.hand2.isHammer){
+                hasHammer = true
+                hammer_owner = props.game.player.name
+            }
+            for(var i = 0; i<props.game.party.length; i++){
+                var j = props.game.party[i]
+                if(j.hand.isHammer){
+                    hasHammer = true
+                    hammer_owner = j.name
+                }
+                if(j.hand2.isHammer){
+                    hasHammer = true
+                    hammer_owner = j.name
+                }
+            }
 
+            if(hasHammer){
+                var dice_roll = getRandomArbitrary(1, 1000)
+                if(dice_roll < 990){
+                    // Break Window
+                    var carV = {...car}
+                    carV.isWindowBroken = true;
+                    set_car(carV)
+                    // Set Button
+                    set_steal_action("Hotwire")
+                    newTurn = false
+                    // Set dialog
+                    var stealD = {dialog:hammer_owner + " smashes the window with his hammer", color:BASIC}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                    var stealR = {dialog: "The window shatters", color:GREEN}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+
+
+                }else{
+                    var stealD = {dialog:hammer_owner + " smashes the window with his hammer", color:BASIC}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                    var stealR = {dialog: "The window is too tough to break", color:RED}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+                }
+            }else{
+                var dice_roll = getRandomArbitrary(1, 101)
+                if(dice_roll > 30){
+                    // Break Window
+                    var carV = {...car}
+                    carV.isWindowBroken = true;
+                    set_car(carV)
+                    // Set Button
+                    set_steal_action("Hotwire")
+                    newTurn = false
+                    // Set dialog
+                    var stealD = {dialog: "You smash the glass with your bare hands", color:BASIC}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                    var stealR = {dialog: "The window shatters", color:GREEN}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+
+
+                }else{
+                    var stealD = {dialog: "You smash the glass with your bare hands", color:BASIC}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                    setTimeout(() => {
+                        var stealR = {dialog: "The window is too tough to break", color:RED}
+                        set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+                    },200)
+                    
+                }
+            }
         }
+        if(newTurn){
+            if(steal_action == "Hotwire"){
+                //get profile with the greatest hotwiring skill
+                var hotwirer = ""
+                var hotwiring = 0
+                if(props.game.player.hotwiring > hotwiring){
+                    hotwirer = props.game.player.name
+                    hotwiring = props.game.player.hotwiring
+                }
+                for(var i = 0; i<props.game.party.length; i++){
+                    var j = props.game.party[i]
+                    if(j.hotwiring >= hotwiring){
+                        hotwiring = j.hotwiring
+                        hotwirer = j.name
+                    }
+                }
+
+
+                // Get viechle difficulty
+                var level = props.game.stealing.level * 10
+                if(level > hotwiring){
+
+                }else{
+                var base_level = 40
+                var level = level + base_level
+                var bonus = 0
+                if(hotwiring > 5){
+                    bonus = hotwiring - 5
+                }
+                //roll dice
+                var dice_roll = getRandomArbitrary(1,12) + bonus
+                if(dice_roll > props.game.stealing.level){
+                    // Set Button
+                    set_steal_action("Drive Away")
+                    newTurn = false
+                    // Log dialog
+                    var stealD = {dialog: hotwirer + " tries sparking the ignition.", color:BASIC}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                    var stealR = {dialog: "The engine starts", color:GREEN}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+                }else{
+                    var stealD = {dialog: hotwirer + " tries sparking the ignition.", color:BASIC}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                    var stealR = {dialog: "The engine doesn't start", color:RED}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+                }
+                    }
+
+
+
+            }
     }
+}
 
     const Distance = () => {
         var per_distance = distance/MAX_DISTANCE * 100
@@ -113,7 +237,7 @@ const Steal = (props) => {
     const Actions = () => {
         return(<View style={{}}>
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', padding:3}}>
-                <TouchableOpacity style={{width:'32%', borderWidth:1, borderRadius:3, borderColor:'#ccc', height:50, alignItems:'center', justifyContent:'center'}}>
+                <TouchableOpacity onPress = {Steal_Action} style={{width:'32%', borderWidth:1, borderRadius:3, borderColor:'#ccc', height:50, alignItems:'center', justifyContent:'center'}}>
                     <Text>{steal_action}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{width:'32%', borderWidth:1, borderRadius:3, borderColor:'#ccc', height:50, alignItems:'center', justifyContent:'center'}}>

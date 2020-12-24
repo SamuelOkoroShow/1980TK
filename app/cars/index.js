@@ -64,7 +64,7 @@ export const Camaro = {
     img: camaro,
     price: 25000,
     level: 7,
-    seats: 5
+    seats: 4
 }
 export const Deawoo = {
     name : "Deawoo",
@@ -112,7 +112,7 @@ export const Lamborghini = {
     img: lamborghini,
     price: 93000,
     level: 9,
-    seats: 5
+    seats: 2
 }
 export const Scooter = {
     name : "Scooter",
