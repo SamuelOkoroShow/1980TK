@@ -99,6 +99,8 @@ const Steal = (props) => {
     const Steal_Action = () => {
         var newTurn = true;
         if(steal_action == "Break In"){
+            console.log(props.game.stealing)
+            if(props.game.stealing.isBike != true){
             //check items
             var hasHammer = false
             var hammer_owner = ""
@@ -171,6 +173,16 @@ const Steal = (props) => {
                     },200)
                     
                 }
+            }}else{
+                // if bike
+                set_steal_action("Hotwire")
+                    newTurn = false
+                    // Set dialog
+                    var stealD = {dialog: "The Bike has no windows.", color:BASIC}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                    var stealR = {dialog: "You get on easily.", color:GREEN}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+
             }
         }
         if(newTurn){

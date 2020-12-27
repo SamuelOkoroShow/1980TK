@@ -74,7 +74,7 @@ const Speed = ({speed}) => {
         
 
 
-        return(<TouchableOpacity onPress = {() => set_car_selected({name:name, image:data.img, condition:condition, seats:data.seats, level:data.level, price:price, speed:speed})} style={{height:80, flexDirection:'row', alignItems:'center', padding:5, marginTop:5, marginHorizontal:10, shadowColor: '#000',
+        return(<TouchableOpacity onPress = {() => set_car_selected({name:name, image:data.img, condition:condition, seats:data.seats, level:data.level, price:price, isBike:data.isBike, speed:speed})} style={{height:80, flexDirection:'row', alignItems:'center', padding:5, marginTop:5, marginHorizontal:10, shadowColor: '#000',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8, borderRadius:5,
         borderColor:'white',

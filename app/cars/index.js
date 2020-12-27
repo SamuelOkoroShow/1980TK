@@ -86,6 +86,7 @@ export const Harley_Davidson = {
     name : "Harley Davidson",
     top_speed: 65,
     img: harley_davidson,
+    isBike:true,
     price: 4000,
     level: 5,
     seats: 2
@@ -118,6 +119,7 @@ export const Scooter = {
     name : "Scooter",
     top_speed: 32,
     img: scooter,
+    isBike: true,
     level: 1,
     price: 600,
     seats: 2
@@ -150,6 +152,7 @@ export const Kawasaki = {
     name : "Kawasaki",
     top_speed: 95,
     img: kawasaki,
+    isBike:true,
     price: 3000,
     level: 5,
     seats: 2
