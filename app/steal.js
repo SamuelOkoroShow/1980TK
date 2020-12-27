@@ -2,7 +2,7 @@ import React,{useState, useRef} from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { travel, skipDay } from '../actions';
+import { skipDay, addCar, addHeat } from '../actions';
 const BASIC = '#333'
 const RED = "#f96062"
 const GREEN = "#07c05a"
@@ -14,6 +14,7 @@ const MAX_DISTANCE = 100
 var reinforcements1 = false;
 var reinforcements2 = false
 var city_level = 0
+var nobodyAround = true;
 
 const Steal = (props) => {
     const opening_dialog = {
@@ -237,6 +238,20 @@ const Steal = (props) => {
 
             }
     }
+    if(newTurn){
+        if(steal_action == "Drive Away"){
+            if(nobodyAround){
+                set_steal_action("Exit")
+                //move car to car owner
+                props.addCar({car: car})
+                props.addHeat({heatVal: car.level*2})
+                var stealD = {dialog:"You have now obtained a " + car.name, color:GREEN}
+                set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                setTimeout(() => props.navigation.navigate('Map'), 4000);
+
+            }
+        }
+    }
 }
 
     const Distance = () => {
@@ -318,7 +333,7 @@ const mapStateToProps = (state) => {
   };
   const mapDispatchToProps = dispatch => (
     bindActionCreators({
-       travel, skipDay
+       skipDay, addCar, addHeat
     }, dispatch)
   );
   

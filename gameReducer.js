@@ -158,7 +158,7 @@ const gameReducer = (state = INITIAL_STATE, action) => {
           
           return newState
     case ADD_CAR:
-          var cars = {...state.cars}
+          var cars = [...state.cars]
           if(state.cars.length < 2){
             cars.push(action.payload.car)
           }
@@ -181,7 +181,7 @@ const gameReducer = (state = INITIAL_STATE, action) => {
           return newState
 
     case ADD_HEAT:
-      var maxtHeat = 100;
+      var maxHeat = 100;
         if(state.heat+action.payload.heatVal < maxHeat){
           var newState = {...state, heat:state.heat+action.payload.heatVal}
         }else{
