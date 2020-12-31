@@ -3,9 +3,13 @@ import { View, Text, Image, TouchableOpacity, FlatList, ScrollView } from 'react
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { skipDay, addCar, addHeat } from '../actions';
+import police from './characters/police'
+import civilians from './characters/civilians'
+
 const BASIC = '#333'
 const RED = "#f96062"
 const GREEN = "#07c05a"
+const BARE_HAND_ODDS = 10
 const CITY_HEAT_COLOR = "#b90000"
 const HEAT_COLOR = "#ed832e"
 const HEAT_BAR = 80;
@@ -14,7 +18,11 @@ const MAX_DISTANCE = 100
 var reinforcements1 = false;
 var reinforcements2 = false
 var city_level = 0
+var city_heat_level = 0;
 var nobodyAround = true;
+var blocks_full = false
+
+var police_on_screen = false
 
 const Steal = (props) => {
     const opening_dialog = {
@@ -31,6 +39,13 @@ const Steal = (props) => {
     const [car_activity, set_car_activity] = useState([""])
     const scrollView = useRef(null)
     const [stealing_dialog, set_stealing_dialog] = useState([opening_dialog])
+    const [block1, set_block1] = useState(activity1)
+    const [block2, set_block2] = useState(activity2)
+    const [block3, set_block3] = useState(activity3)
+    const [block4, set_block4] = useState(activity4)
+    const [block5, set_block5] = useState(activity5)
+    const [reinforcements3, set_reinforcements3] = useState(reinforcements1)
+    const [reinforcements4, set_reinforcements4] = useState(reinforcements2)
     const [steal_action, set_steal_action] = useState("Break In")
     const [city_heat, set_city_heat] = useState(props.game.city_heat.puerto_vallarta)
     const [distance, set_distance] = useState(distanceLoad)
@@ -45,7 +60,7 @@ const Steal = (props) => {
             </ScrollView></View>)
     }
     const Car = (data) => {
-        console.log(data)
+        //console.log(data)
         const {image, name, condition} = data
 
         return(<View style={{width:'100%', marginLeft:5,marginTop:5, height:70, width:70,}}>
@@ -54,11 +69,8 @@ const Steal = (props) => {
             </View>
         </View>)
     }
-    const Heat_bar = () => {
-        //var city_heat
-        var heat_width = props.game.heat
-        
-    
+
+    const City_Heat_Logic = () => {
         if(props.game.city.name == "Puerto Vallarta"){
             //set_city_heat((props.game.city_heat.puerto_vallarta/maxHeat) * HEAT_BAR)
             city_level = (props.game.city_heat.puerto_vallarta/maxHeat) * HEAT_BAR
@@ -79,6 +91,14 @@ const Steal = (props) => {
             //set_city_heat((props.game.city_heat.tabasco/maxHeat) * HEAT_BAR)
             city_level = (props.game.city_heat.tabasco/maxHeat) * HEAT_BAR
         }
+        return {city_level, city_heat_level}
+    }
+    const Heat_bar = () => {
+        //var city_heat
+        var heat_width = props.game.heat
+        city_level = City_Heat_Logic().city_level
+    
+        
         
         var heatz = (props.game.heat/maxHeat) * HEAT_BAR
     
@@ -97,10 +117,88 @@ const Steal = (props) => {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
+    const Steal_Reaction = () => {
+        // 6 blocks o possible enemies
+        // ind the greatest sneaking level
+        console.log('init Reaction')
+            var dice_roll = getRandomArbitrary(0,100)
+            console.log(dice_roll)
+            var heat_logic = 0
+            if(100 <= (props.game.heat + City_Heat_Logic().city_heat_level)){
+                heat_logic = 100
+            }else{
+                heat_logic = props.game.heat + City_Heat_Logic().city_heat_level;
+            }
+            
+            if(dice_roll > heat_logic){
+                console.log('New Reaction')
+                console.log(activity1)
+                // import civilian
+                var newCharacter = {}
+                var police_character = false
+                var pick_character = getRandomArbitrary(0,4)
+                newCharacter = civilians[pick_character]
+
+                if(dice_roll > 50){
+                    // swap civilian to police
+                    pick_character = getRandomArbitrary(0,3)
+                    newCharacter = police[pick_character]
+                    police_character = true
+                    console.log("50 police")
+                    console.log(newCharacter)
+                    
+                }
+                if(police_on_screen){
+                    //swap civilian to police
+                    console.log("screen police")
+                    console.log(newCharacter)
+                    police_character = true;
+                    pick_character = getRandomArbitrary(0,3)
+                    newCharacter = police[pick_character]
+
+                }
+                // push to activity1
+                var newDialog = {dialog:newCharacter.name + " appeared in the scene. He is yelling at you.", color:BASIC}
+                set_stealing_dialog(stealing_dialog => [...stealing_dialog, newDialog])
+                for(var i = 0; i < block3.length; i++){
+                    if(block3[i].name == null){
+                        set_reinforcements3(true)
+                        console.log(i)
+                        console.log(newCharacter)
+                        var newBlock1 = [...block3]
+                        newBlock1[i] = newCharacter
+                        set_block3(newBlock1)
+                        break
+                    }
+                }
+                if(police_character){
+                    var shout = getRandomArbitrary(0,3)
+                    var shout1 = "Hold it right there!"
+                    var shout2 = "Stop! Don't move a muscle!"
+                    var shout3 = "You there! Stop this instant!"
+                    var shouts = [shout1,shout2,shout3]
+                    
+                    var stealD = {dialog:shouts[shout], color:RED}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                }
+                if(!police_character){
+                    var shout = getRandomArbitrary(0,3)
+                    var shout1 = "Wait! What are you doing!"
+                    var shout2 = "Help! Somebody help!"
+                    var shout3 = "Stop that now!!!"
+                    var shouts = [shout1,shout2,shout3]
+
+                    var stealD = {dialog:shouts[shout], color:RED}
+                    set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
+                }
+            }
+        
+    }
+
     const Steal_Action = () => {
         var newTurn = true;
         if(steal_action == "Break In"){
-            console.log(props.game.stealing)
+            //console.log(props.game.stealing)
             if(props.game.stealing.isBike != true){
             //check items
             var hasHammer = false
@@ -135,6 +233,7 @@ const Steal = (props) => {
                     // Set Button
                     set_steal_action("Hotwire")
                     newTurn = false
+                    Steal_Reaction()
                     // Set dialog
                     var stealD = {dialog:hammer_owner + " smashes the window with his hammer", color:BASIC}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
@@ -147,10 +246,11 @@ const Steal = (props) => {
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
                     var stealR = {dialog: "The window is too tough to break", color:RED}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
+                    Steal_Reaction()
                 }
             }else{
                 var dice_roll = getRandomArbitrary(1, 101)
-                if(dice_roll > 30){
+                if(dice_roll > BARE_HAND_ODDS){
                     // Break Window
                     var carV = {...car}
                     carV.isWindowBroken = true;
@@ -158,30 +258,33 @@ const Steal = (props) => {
                     // Set Button
                     set_steal_action("Hotwire")
                     newTurn = false
+                    Steal_Reaction()
                     // Set dialog
-                    var stealD = {dialog: "You smash the glass with your bare hands", color:BASIC}
+                    var stealD = {dialog: "You smash the glass with your bare hands (" + (100 - BARE_HAND_ODDS) + "%)", color:BASIC}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
                     var stealR = {dialog: "The window shatters", color:GREEN}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
 
 
                 }else{
-                    var stealD = {dialog: "You smash the glass with your bare hands", color:BASIC}
+                    var stealD = {dialog: "You smash the glass with your bare hands (" + (100 - BARE_HAND_ODDS) + "%)", color:BASIC}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
                     setTimeout(() => {
                         var stealR = {dialog: "The window is too tough to break", color:RED}
                         set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
                     },200)
+                    Steal_Reaction()
                     
                 }
             }}else{
                 // if bike
                 set_steal_action("Hotwire")
                     newTurn = false
+                    Steal_Reaction()
                     // Set dialog
                     var stealD = {dialog: "The Bike has no windows.", color:BASIC}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
-                    var stealR = {dialog: "You get on easily.", color:GREEN}
+                    var stealR = {dialog: "You get in easily.", color:GREEN}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealR])
 
             }
@@ -221,6 +324,7 @@ const Steal = (props) => {
                     // Set Button
                     set_steal_action("Drive Away")
                     newTurn = false
+                    Steal_Reaction()
                     // Log dialog
                     var stealD = {dialog: hotwirer + " tries sparking the ignition.", color:BASIC}
                     set_stealing_dialog(stealing_dialog => [...stealing_dialog, stealD])
@@ -295,27 +399,27 @@ const Steal = (props) => {
             >
             <View>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-                    {activity1.map((data, index) => <Car key = {index+1} {...data} />)}
+                    {block1.map((data, index) => <Car key = {index+1} {...data} />)}
                 </View>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-                    {activity2.map((data, index) => <Car key = {index+1} {...data} />)}
+                    {block2.map((data, index) => <Car key = {index+1} {...data} />)}
                 </View>
             </View>
             <View style={{height:'100%', width:1, backgroundColor:'#333', marginHorizontal:5}} />
-            {(reinforcements1)?<View>
+            {(reinforcements3)?<View>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-                    {activity3.map((data, index) => <Car key = {index+1} {...data} />)}
+                    {block3.map((data, index) => <Car key = {index+1} {...data} />)}
                 </View>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-                    {activity4.map((data, index) => <Car key = {index+1} {...data} />)}
+                    {block4.map((data, index) => <Car key = {index+1} {...data} />)}
                 </View>
             </View>:null}
-            {(reinforcements2)?<View>
+            {(reinforcements4)?<View>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-                    {activity3.map((data, index) => <Car key = {index+1} {...data} />)}
+                    {block3.map((data, index) => <Car key = {index+1} {...data} />)}
                 </View>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
-                    {activity4.map((data, index) => <Car key = {index+1} {...data} />)}
+                    {block4.map((data, index) => <Car key = {index+1} {...data} />)}
                 </View>
             </View>:null}
             </ScrollView>
