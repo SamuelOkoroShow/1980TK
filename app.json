@@ -13,6 +13,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": ""
+    "description": "",
+    "android": {
+      "package": "com.samuel"
+    },
+    "ios": {
+      "bundleIdentifier": "com.samuel"
+    }
   }
 }

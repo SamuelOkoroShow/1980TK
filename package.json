@@ -4,7 +4,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
-    "start": "react-native start",
+    "start": "expo start --dev-client",
     "test": "jest"
   },
   "dependencies": {
@@ -39,5 +39,7 @@
   "jest": {
     "preset": "react-native"
   },
-  "private": true
+  "private": true,
+  "name": "1980TK",
+  "version": "1.0.0"
 }

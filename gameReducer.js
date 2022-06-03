@@ -47,7 +47,7 @@ const INITIAL_STATE = {
   ],
   heat: 50,
   park: {
-    name:'Oaxaca City National',
+    name:'Isla Mujeres National',
     cars: []
   },
   city_heat: {
